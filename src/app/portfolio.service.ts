@@ -31,8 +31,26 @@ export class PortfolioService {
         },
         {
           symbol: "RTS2",
-          stockCount: 235,
+          stockCount: 227,
           buyPrice: 15.5,
+          owner: "Olga"
+        },
+        {
+          symbol: "RTS2",
+          stockCount: 8,
+          buyPrice: 19.5,
+          owner: "Andrei"
+        },
+        {
+          symbol: "1YD",
+          stockCount: 5,
+          buyPrice: 421.1,
+          owner: "Olga"
+        },
+        {
+          symbol: "HDI",
+          stockCount: 9,
+          buyPrice: 283.5,
           owner: "Olga"
         },
         {
@@ -43,8 +61,8 @@ export class PortfolioService {
         },
         {
           symbol: "SOBA",
-          stockCount: 180,
-          buyPrice: 24.01,
+          stockCount: 80,
+          buyPrice: 24.1,
           owner: "Olga"
         },
         {
@@ -118,7 +136,7 @@ export class PortfolioService {
           stockCount: 25,
           buyPrice: 20.08,
           owner: "Sergei"
-        },
+        }
       ]
     });
   }

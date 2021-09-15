@@ -7,7 +7,7 @@ import {Quotes} from "./quotes";
 export class StockQuoteCacheService {
 
   private readonly LOCAL_STORAGE_KEY = "quotes";
-  private readonly CACHE_EXPIRATION_MILLIS = 60 * 60 * 1000;
+  private readonly CACHE_EXPIRATION_MILLIS = 180 * 60 * 1000;
 
   constructor() { }
 
