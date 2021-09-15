@@ -5,8 +5,6 @@ import {StockQuoteCacheService} from "./stock-quote-cache.service";
 import {PortfolioService} from "./portfolio.service";
 import {Portfolio, Position} from "./portfolio";
 import {formatCurrency} from "@angular/common";
-import {Chart} from "chart.js";
-import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 @Component({
   selector: 'app-root',
@@ -112,11 +110,32 @@ export class AppComponent implements OnInit {
     return value;
   }
 
-  private getData(quotesMap: Map<string,number>, positions: Position[]) {
+  private getData(quotesMap: Map<string, number>, positions: Position[]) {
+    let symbolToNameMap = new Map([
+      ["APC", "Apple"],
+      ["MSF", "Microsoft"],
+      ["CSA", "Accenture"],
+      ["RTS2", "Severstal"],
+      ["XONA", "Exxon"],
+      ["SOBA", "AT&T"],
+      ["WX2", "FRIT"],
+      ["PEP", "Pepsi"],
+      ["WDP", "Disney"],
+      ["AMZ", "Amazon"],
+      ["LUK", "Lukoil"],
+      ["PFE", "Pfizer"],
+      ["AIY", "Blizzard"],
+      ["BCO", "Boeing"],
+      ["11L1", "Canopy Growth"],
+      ["TEV", "Teva"],
+      ["1YD", "Broadcom"],
+      ["HDI", "Home Depot"]
+    ]);
+
     let data: Array<any> = [];
     positions.forEach(position => {
       data.push({
-        name: position.symbol,
+        name: symbolToNameMap.get(position.symbol),
         price: this.getValue(quotesMap, this.appendExchangeSymbol(position.symbol)) * position.stockCount
       });
     });
