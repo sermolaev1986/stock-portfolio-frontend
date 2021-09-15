@@ -5,6 +5,6 @@ export type Portfolio = {
 export type Position = {
   symbol: string,
   stockCount: number,
-  buyPrice: number
+  buyPrice: number,
   owner: string
 }

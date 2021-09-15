@@ -4,6 +4,9 @@ import {Quotes} from "./quotes";
 import {StockQuoteCacheService} from "./stock-quote-cache.service";
 import {PortfolioService} from "./portfolio.service";
 import {Portfolio, Position} from "./portfolio";
+import {formatCurrency} from "@angular/common";
+import {Chart} from "chart.js";
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 @Component({
   selector: 'app-root',
@@ -15,11 +18,21 @@ export class AppComponent implements OnInit {
   andreiData: any = [];
   olgaData: any = [];
 
+  public andreiTotalExpenses = "";
+  public andreiTotalProfit = "";
+
+  public sergeiTotalExpenses = "";
+  public sergeiTotalProfit = "";
+
+  public olgaTotalExpenses = "";
+  public olgaTotalProfit = "";
+
   basicOptions = {
     plugins: {
       legend: {
         display: false
-      }
+      },
+      responsive: true
     }
   };
 
@@ -31,6 +44,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Chart.register(ChartDataLabels);
+
     this.portfolioService.getPortfolio().then(portfolio => {
       let symbols = [...new Set(portfolio.positions.map(position => position.symbol))];
       symbols = symbols.map(symbol => this.appendExchangeSymbol(symbol));
@@ -48,17 +63,61 @@ export class AppComponent implements OnInit {
 
   fillCharts(quotes: Quotes, portfolio: Portfolio) {
     console.log(quotes);
-    this.sergeiData = this.getData(quotes, portfolio.positions.filter(value => value.owner === "Sergei"));
-    this.olgaData = this.getData(quotes, portfolio.positions.filter(value => value.owner === "Olga"));
-    this.andreiData = this.getData(quotes, portfolio.positions.filter(value => value.owner === "Andrei"));
+    let quotesMap: Map<string, number> = new Map(quotes.data.map(quote => [quote.symbol, quote.close]));
+    console.log(quotesMap);
+
+    let sergeiPositions = portfolio.positions.filter(value => value.owner === "Sergei");
+    let olgaPositions = portfolio.positions.filter(value => value.owner === "Olga");
+    let andreiPositions = portfolio.positions.filter(value => value.owner === "Andrei");
+
+    let andreiTotalExpenses = this.getTotalExpenses(andreiPositions);
+    let olgaTotalExpenses = this.getTotalExpenses(olgaPositions);
+    let sergeiTotalExpenses = this.getTotalExpenses(sergeiPositions);
+
+    this.andreiTotalExpenses = this.formatToCurrencyString(andreiTotalExpenses);
+    this.olgaTotalExpenses = this.formatToCurrencyString(olgaTotalExpenses);
+    this.sergeiTotalExpenses = this.formatToCurrencyString(sergeiTotalExpenses);
+
+    this.andreiTotalProfit = this.formatToCurrencyString(this.getTotalProfit(andreiTotalExpenses, andreiPositions, quotesMap));
+    this.olgaTotalProfit = this.formatToCurrencyString(this.getTotalProfit(olgaTotalExpenses, olgaPositions, quotesMap));
+    this.sergeiTotalProfit = this.formatToCurrencyString(this.getTotalProfit(sergeiTotalExpenses, sergeiPositions, quotesMap));
+
+    this.sergeiData = this.getData(quotesMap, sergeiPositions);
+    this.olgaData = this.getData(quotesMap, olgaPositions);
+    this.andreiData = this.getData(quotesMap, andreiPositions);
   }
 
-  private getData(quotes: Quotes, positions: Position[]) {
+  private getTotalExpenses(positions: Position[]): number {
+    return positions
+      .map(position => position.buyPrice * position.stockCount)
+      .reduce((a, b) => a + b);
+  }
+
+  private formatToCurrencyString(amount: number): string {
+    return formatCurrency(amount, "de-AT", "EUR");
+  }
+
+  private getTotalProfit(expenses: number, positions: Position[], quotesMap: Map<string, number>): number {
+    let currentPortfolioValue = positions
+      .map(position => this.getValue(quotesMap, this.appendExchangeSymbol(position.symbol)) * position.stockCount)
+      .reduce((a, b) => a + b);
+    return currentPortfolioValue - expenses;
+  }
+
+  private getValue(map: Map<string, number>, key: string): number {
+    let value = map.get(key);
+    if (!value) {
+      value = 0;
+    }
+    return value;
+  }
+
+  private getData(quotesMap: Map<string,number>, positions: Position[]) {
     let data: Array<any> = [];
     positions.forEach(position => {
       data.push({
         name: position.symbol,
-        price: quotes.data.find(quote => quote.symbol === this.appendExchangeSymbol(position.symbol))?.close
+        price: this.getValue(quotesMap, this.appendExchangeSymbol(position.symbol)) * position.stockCount
       });
     });
 
@@ -72,12 +131,34 @@ export class AppComponent implements OnInit {
           backgroundColor: [
             "#42A5F5",
             "#66BB6A",
-            "#FFA726"
+            "#FFA726",
+            "#62929E",
+            "#4A6D7C",
+            "#9AD1D4",
+            "#FCE762",
+            "#4F4789",
+            "#CBE896",
+            "#AD5D4E",
+            "#EB6534",
+            "#E85F5C",
+            "#FFDAC6",
+            "#7C6A0A"
           ],
           hoverBackgroundColor: [
             "#64B5F6",
             "#81C784",
-            "#FFB74D"
+            "#FFB74D",
+            "#62929E",
+            "#4A6D7C",
+            "#9AD1D4",
+            "#FCE762",
+            "#4F4789",
+            "#CBE896",
+            "#AD5D4E",
+            "#EB6534",
+            "#E85F5C",
+            "#FFDAC6",
+            "#7C6A0A"
           ]
         }
       ]

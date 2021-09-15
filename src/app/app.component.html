@@ -2,13 +2,25 @@
   <div class="card">
     <h2>Andrei</h2>
     <p-chart type="doughnut" [data]="andreiData" [options]="basicOptions"></p-chart>
+    <p-card class="my-card">
+      <p-badge severity="warning" [value]="andreiTotalExpenses"></p-badge>
+      <p-badge severity="success" [value]="andreiTotalProfit"></p-badge>
+    </p-card>
   </div>
   <div class="card">
     <h2>Olga</h2>
     <p-chart type="doughnut" [data]="olgaData" [options]="basicOptions"></p-chart>
+    <p-card class="my-card">
+      <p-badge severity="warning" [value]="olgaTotalExpenses"></p-badge>
+      <p-badge severity="success" [value]="olgaTotalProfit"></p-badge>
+    </p-card>
   </div>
   <div class="card">
     <h2>Sergei</h2>
     <p-chart type="doughnut" [data]="sergeiData" [options]="basicOptions"></p-chart>
+    <p-card class="my-card">
+      <p-badge severity="warning" [value]="sergeiTotalExpenses"></p-badge>
+      <p-badge severity="success" [value]="sergeiTotalProfit"></p-badge>
+    </p-card>
   </div>
 </div>
