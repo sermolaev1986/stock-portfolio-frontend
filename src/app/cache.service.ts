@@ -1,27 +1,25 @@
 import { Injectable } from '@angular/core';
-import {Quotes} from "./quotes";
 
 @Injectable({
   providedIn: 'root'
 })
-export class StockQuoteCacheService {
+export class CacheService {
 
-  private readonly LOCAL_STORAGE_KEY = "quotes";
   private readonly CACHE_EXPIRATION_MILLIS = 180 * 60 * 1000;
 
   constructor() { }
 
-  public save(quotes: Quotes) {
+  public save(key: string, object: any) {
     const record = {
-      value: JSON.stringify(quotes),
+      value: JSON.stringify(object),
       expiration: new Date().getTime() + this.CACHE_EXPIRATION_MILLIS,
       hasExpiration: true
     }
-    localStorage.setItem(this.LOCAL_STORAGE_KEY, JSON.stringify(record))
+    localStorage.setItem(key, JSON.stringify(record))
   }
 
-  public load(): Quotes | null {
-    const item = localStorage.getItem(this.LOCAL_STORAGE_KEY);
+  public load(key: string): any | null {
+    const item = localStorage.getItem(key);
     if (item !== null) {
       const record = JSON.parse(item);
       const now = new Date().getTime()

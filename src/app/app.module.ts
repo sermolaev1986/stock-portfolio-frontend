@@ -8,19 +8,23 @@ import {CardModule} from "primeng/card";
 import {BadgeModule} from "primeng/badge";
 import {registerLocaleData} from "@angular/common";
 import localeAustria from '@angular/common/locales/de-AT';
+import { DividendsComponent } from './dividends/dividends.component';
+import {TableModule} from "primeng/table";
 
 registerLocaleData(localeAustria, 'de-AT');
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DividendsComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     ChartModule,
     CardModule,
-    BadgeModule
+    BadgeModule,
+    TableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

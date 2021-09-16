@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {StockQuoteService} from "./stock-quote.service";
 import {Quotes} from "./quotes";
-import {StockQuoteCacheService} from "./stock-quote-cache.service";
+import {CacheService} from "./cache.service";
 import {PortfolioService} from "./portfolio.service";
 import {Portfolio, Position} from "./portfolio";
 import {formatCurrency} from "@angular/common";
@@ -12,6 +12,9 @@ import {formatCurrency} from "@angular/common";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+
+  private readonly LOCAL_STORAGE_KEY = "quotes";
+
   sergeiData: any = [];
   andreiData: any = [];
   olgaData: any = [];
@@ -38,7 +41,7 @@ export class AppComponent implements OnInit {
 
   constructor(private readonly portfolioService: PortfolioService,
               private readonly stockQuoteService: StockQuoteService,
-              private readonly cacheService: StockQuoteCacheService) {
+              private readonly cacheService: CacheService) {
   }
 
   ngOnInit(): void {
@@ -49,7 +52,7 @@ export class AppComponent implements OnInit {
       symbols = symbols.map(symbol => this.appendExchangeSymbol(symbol));
 
       this.stockQuoteService.getQuotes(symbols).then(quotes => {
-        this.cacheService.save(quotes);
+        this.cacheService.save(this.LOCAL_STORAGE_KEY, quotes);
         this.fillCharts(quotes, portfolio);
       });
     })

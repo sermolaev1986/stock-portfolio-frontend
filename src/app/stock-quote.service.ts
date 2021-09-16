@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Quotes} from "./quotes";
-import {StockQuoteCacheService} from "./stock-quote-cache.service";
+import {CacheService} from "./cache.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +12,14 @@ export class StockQuoteService {
 
   private readonly basePath = "http://api.marketstack.com/v1";
 
-  constructor(private readonly http: HttpClient, private readonly cacheService: StockQuoteCacheService) {
+  private readonly LOCAL_STORAGE_KEY = "quotes";
+
+  constructor(private readonly http: HttpClient, private readonly cacheService: CacheService) {
   }
 
   public getQuotes(symbols: string[]): Promise<Quotes> {
     console.log(`fetching quotes for ${symbols.length} symbols: ${symbols}`);
-    let quotes = this.cacheService.load();
+    let quotes = this.cacheService.load(this.LOCAL_STORAGE_KEY);
     if (quotes == null) {
       console.log("Cache is empty, calling API");
       let headers = new HttpHeaders();
