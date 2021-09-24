@@ -1,0 +1,45 @@
+<p-table [value]="positions" [paginator]="true" [rows]="10">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Name</th>
+      <th>Stk</th>
+      <th>Einstandswert</th>
+      <th>Marktwert</th>
+      <th>Dividende</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-position>
+    <tr>
+      <td>{{position.name}}</td>
+      <td>{{position.stockCount}}</td>
+      <td>{{position.buyValue | currency:'EUR'}}</td>
+      <td>{{position.currentValue | currency: 'EUR'}}</td>
+      <td>{{position.dividendsTotalAmountPaid | currency: 'EUR'}}</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-table *ngIf="dividends.length != 0" [value]="dividends" [paginator]="true" [rows]="10">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>payment date</th>
+      <th>amount per share</th>
+      <th>split adjusted stock count</th>
+      <th>dollar brutto amount</th>
+      <th>dollar netto amount</th>
+      <th>euro brutto amount</th>
+      <th>euro netto amount</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-dividend>
+    <tr>
+      <td>{{dividend.paymentDate}}</td>
+      <td>{{dividend.amountPerShare}}</td>
+      <td>{{dividend.stockCount}}</td>
+      <td>{{dividend.dollarBruttoAmount | currency: 'USD'}}</td>
+      <td>{{dividend.dollarNettoAmount | currency: 'USD'}}</td>
+      <td>{{dividend.euroBruttoAmount | currency: 'EUR'}}</td>
+      <td>{{dividend.euroNettoAmount | currency: 'EUR'}}</td>
+    </tr>
+  </ng-template>
+</p-table>
