@@ -19,7 +19,9 @@ export class PortfolioDetailsComponent implements OnInit {
   public positions: Array<PortfolioPosition> = [];
 
   public dividends: Array<SplitAdjustedDividend> = [];
-  private dividendMap: Map<string, SplitAdjustedDividend> = new Map<string, SplitAdjustedDividend>();
+
+  private dividendByDateMap: Map<string, Map<string, SplitAdjustedDividend>> = new Map<string, Map<string, SplitAdjustedDividend>>();
+  private dividendsBySymbolMap: Map<string, Array<SplitAdjustedDividend>> = new Map<string, Array<SplitAdjustedDividend>>();
 
   constructor(private readonly portfolioService: PortfolioService,
               private readonly dividendService: DividendService,
@@ -33,13 +35,13 @@ export class PortfolioDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       let owner = params['owner'];
-      this.portfolioService.getPortfolio().then(portfolio => {
-        let symbols = [...new Set(portfolio.positions.map(position => position.symbol))];
+      this.portfolioService.getPortfolio().then(positions => {
+        let symbols = [...new Set(positions.map(position => position.symbol))];
 
         this.stockQuoteService.getQuotes(symbols).then(quotes => {
           let quotesMap: Map<string, number> = new Map(quotes.data.map(quote => [quote.symbol, quote.close]));
 
-          let ownerPositions = portfolio.positions.filter(value => value.owner === owner);
+          let ownerPositions = positions.filter(value => value.owner === owner);
           this.positions = ownerPositions.map(position => {
             return {
               symbol: position.symbol,
@@ -47,6 +49,7 @@ export class PortfolioDetailsComponent implements OnInit {
               stockCount: position.stockCount,
               currentValue: this.getValue(quotesMap, this.stockSymbolService.appendExchangeSymbol(position.symbol)) * position.stockCount,
               buyValue: position.buyPrice * position.stockCount,
+              buyDate: position.buyDate,
               dividendsTotalAmountPaid: 0,
               lastDividendDate: "",
               lastDividendAmount: 0
@@ -54,43 +57,45 @@ export class PortfolioDetailsComponent implements OnInit {
           });
 
           ownerPositions.forEach(ownerPosition => {
-            if (this.dividendService.isDividendStock(ownerPosition.symbol)) {
-              this.dividendService.getDividends(ownerPosition.symbol, ownerPosition.buyDate).then((dividends: Dividends) => {
-                this.stockSplitService.getSplits(ownerPosition.symbol).then(splits => {
-                  let splitsAfterBuy = splits.results
-                    .filter(split => new Date(split.paymentDate).getTime() > new Date(ownerPosition.buyDate).getTime());
+            this.dividendService.getDividends(ownerPosition.symbol, ownerPosition.buyDate).then((dividends: Dividends) => {
+              this.stockSplitService.getSplits(ownerPosition.symbol).then(splits => {
+                let splitsAfterBuy = splits.results
+                  .filter(split => new Date(split.paymentDate).getTime() > new Date(ownerPosition.buyDate).getTime());
 
-                  let splitAdjustedDividends = dividends.results
-                    .filter(dividend => new Date(dividend.paymentDate).getTime() > new Date(ownerPosition.buyDate).getTime())
-                    .map(dividend => {
-                      let splitAdjustedStockCount = ownerPosition.stockCount;
-                      splitsAfterBuy
-                        .filter(split => new Date(dividend.paymentDate).getTime() > new Date(split.paymentDate).getTime())
-                        .forEach(split => {
-                          splitAdjustedStockCount = splitAdjustedStockCount / split.ratio;
-                        });
-                      let dollarBruttoAmount = splitAdjustedStockCount * dividend.amount;
-                      //15% Quellensteuer
-                      let dollarNettoAmount = dollarBruttoAmount * 0.85;
+                let splitAdjustedDividends = dividends.results
+                  .filter(dividend => new Date(dividend.paymentDate).getTime() > new Date(ownerPosition.buyDate).getTime())
+                  .filter(dividend => new Date(dividend.exDate).getTime() > new Date(ownerPosition.buyDate).getTime())
+                  .map(dividend => {
+                    let splitAdjustedStockCount = ownerPosition.stockCount;
+                    splitsAfterBuy
+                      .filter(split => new Date(dividend.paymentDate).getTime() > new Date(split.paymentDate).getTime())
+                      .forEach(split => {
+                        splitAdjustedStockCount = splitAdjustedStockCount / split.ratio;
+                      });
+                    let dollarBruttoAmount = splitAdjustedStockCount * dividend.amount;
+                    //15% Quellensteuer
+                    let dollarNettoAmount = dollarBruttoAmount * 0.85;
 
-                      return new SplitAdjustedDividend(splitAdjustedStockCount,
-                        dividend.amount,
-                        dollarBruttoAmount,
-                        dollarNettoAmount,
-                        dividend.paymentDate);
-                    });
+                    return new SplitAdjustedDividend(splitAdjustedStockCount,
+                      dividend.amount,
+                      dollarBruttoAmount,
+                      dollarNettoAmount,
+                      dividend.paymentDate);
+                  });
 
-                  let pos = this.positions.find(x => x.symbol === ownerPosition.symbol);
-                  if (ownerPosition.symbol === "APC") {
-                    this.dividendMap = splitAdjustedDividends.reduce(function(map, obj) {
-                      map.set(obj.paymentDate, obj);
-                      return map;
-                    }, new Map<string, SplitAdjustedDividend>());
+                let pos = this.positions.find(x => x.symbol === ownerPosition.symbol);
+                this.dividendByDateMap.set(ownerPosition.symbol, splitAdjustedDividends.reduce(function (map, obj) {
+                  map.set(obj.paymentDate, obj);
+                  return map;
+                }, new Map<string, SplitAdjustedDividend>()));
 
-                    this.dividends = splitAdjustedDividends;
-                  }
+                this.dividends = splitAdjustedDividends;
+                this.dividendsBySymbolMap.set(ownerPosition.symbol, splitAdjustedDividends);
 
-                  splitAdjustedDividends.forEach(splitAdjustedDividend => {
+                splitAdjustedDividends.forEach(splitAdjustedDividend => {
+                  if (new Date(splitAdjustedDividend.paymentDate).getTime() > new Date().getTime()) {
+
+                  } else {
                     this.exchangeRatesService.getExchangeRates(splitAdjustedDividend.paymentDate).then(exchangeRate => {
                       if (pos) {
                         // @ts-ignore
@@ -99,20 +104,21 @@ export class PortfolioDetailsComponent implements OnInit {
                         let euroNettoAmount = euroBruttoAmount * 0.875;
                         pos.dividendsTotalAmountPaid += euroNettoAmount;
 
-                        if (pos.symbol === "APC") {
-                          let div = this.dividendMap.get(splitAdjustedDividend.paymentDate);
-                          if(div) {
+                        let map = this.dividendByDateMap.get(ownerPosition.symbol);
+                        if (map) {
+                          let div = map.get(splitAdjustedDividend.paymentDate);
+                          if (div) {
                             div.euroBruttoAmount = euroBruttoAmount;
                             div.euroNettoAmount = euroNettoAmount;
                           }
                         }
                       }
-
                     });
-                  });
+                  }
+
                 });
               });
-            }
+            });
           });
         });
       })
@@ -127,4 +133,17 @@ export class PortfolioDetailsComponent implements OnInit {
     return value;
   }
 
+  onDividendClick(symbol: string) {
+    console.log(`symbol ${symbol} clicked`);
+    let dividends = this.dividendsBySymbolMap.get(symbol);
+    if (dividends) {
+      this.dividends = dividends;
+    } else {
+      this.dividends = [];
+    }
+  }
+
+  isPaymentDateInFuture(paymentDate: string):boolean {
+    return new Date(paymentDate).getTime() > new Date().getTime();
+  }
 }

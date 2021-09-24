@@ -5,6 +5,7 @@ export type Dividends = {
 export type Dividend = {
   ticker: string,
   paymentDate: string,
+  exDate: string,
   amount: number,
 }
 

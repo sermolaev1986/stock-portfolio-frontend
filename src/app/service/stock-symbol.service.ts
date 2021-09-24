@@ -26,7 +26,9 @@ export class StockSymbolService {
     ["TEV", "Teva"],
     ["1YD", "Broadcom"],
     ["HDI", "Home Depot"],
-    ["PRG", "Procter & Gamble"]
+    ["PRG", "Procter & Gamble"],
+    ["2PP", "PayPal"],
+    ["13T1", "TCS Group"],
   ]);
 
   private readonly usSymbolMap = new Map([

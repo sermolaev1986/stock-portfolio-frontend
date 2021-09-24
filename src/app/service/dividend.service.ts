@@ -5,6 +5,7 @@ import {Dividends} from "../model/dividends";
 import {StockSymbolService} from "./stock-symbol.service";
 import {tap} from "rxjs/operators";
 import {ApiKeys} from "../api-keys/api-keys";
+import {YahooDividendService} from "./yahoo-dividend.service";
 
 @Injectable({
   providedIn: 'root'
@@ -21,13 +22,20 @@ export class DividendService {
 
   constructor(private readonly http: HttpClient,
               private readonly cacheService: CacheService,
-              private readonly stockSymbolService: StockSymbolService) {
+              private readonly stockSymbolService: StockSymbolService,
+              private readonly yahooDividendService: YahooDividendService) {
   }
 
   public getDividends(symbol: string, dateFrom: string): Promise<Dividends> {
     let usSymbol = this.stockSymbolService.getUsSymbol(symbol);
     if (!usSymbol) {
       console.log(`no us symbol found for ${symbol}`);
+      return Promise.resolve({results: []});
+    }
+
+    if (!this.isDividendStock(symbol)) {
+      // console.log(`calling yahoo api to get dividends for symbol ${usSymbol}`);
+      // return this.yahooDividendService.getDividends(usSymbol, dateFrom);
       return Promise.resolve({results: []});
     } else {
       console.log(`fetching dividends for ${usSymbol} from date ${dateFrom}`);
@@ -43,6 +51,7 @@ export class DividendService {
         console.log("Cache is found, returning from cache");
         return Promise.resolve(dividends);
       }
+
     }
 
   }

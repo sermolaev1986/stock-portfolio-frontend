@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {PortfolioService} from "../service/portfolio.service";
 import {StockQuoteService} from "../service/stock-quote.service";
-import {Portfolio, Position} from "../model/portfolio";
+import {Position} from "../model/portfolio";
 import {formatCurrency} from "@angular/common";
 import {StockSymbolService} from "../service/stock-symbol.service";
 
@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit {
     // Chart.register(ChartDataLabels);
 
     this.portfolioService.getPortfolio().then(portfolio => {
-      let symbols = [...new Set(portfolio.positions.map(position => position.symbol))];
+      let symbols = [...new Set(portfolio.map(position => position.symbol))];
       symbols = symbols.map(symbol => this.stockSymbolService.appendExchangeSymbol(symbol));
 
       this.stockQuoteService.getQuotes(symbols).then(quotes => {
@@ -55,10 +55,10 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  fillCharts(quotesMap: Map<string, number>, portfolio: Portfolio) {
-    let sergeiPositions = portfolio.positions.filter(value => value.owner === "Sergei");
-    let olgaPositions = portfolio.positions.filter(value => value.owner === "Olga");
-    let andreiPositions = portfolio.positions.filter(value => value.owner === "Andrei");
+  fillCharts(quotesMap: Map<string, number>, positions: Array<Position>) {
+    let sergeiPositions = positions.filter(value => value.owner === "Sergei");
+    let olgaPositions = positions.filter(value => value.owner === "Olga");
+    let andreiPositions = positions.filter(value => value.owner === "Andrei");
 
     let andreiTotalExpenses = this.getTotalExpenses(andreiPositions);
     let olgaTotalExpenses = this.getTotalExpenses(olgaPositions);
@@ -88,8 +88,16 @@ export class DashboardComponent implements OnInit {
   }
 
   private getTotalProfit(expenses: number, positions: Position[], quotesMap: Map<string, number>): number {
+    //hotfix for Apple stock split
+    let position = positions.find(value => value.symbol === 'APC');
+    if (position) {
+      position.stockCount = position.stockCount * 4;
+    }
+
     let currentPortfolioValue = positions
-      .map(position => this.getValue(quotesMap, this.stockSymbolService.appendExchangeSymbol(position.symbol)) * position.stockCount)
+      .map(position => {
+        return this.getValue(quotesMap, this.stockSymbolService.appendExchangeSymbol(position.symbol)) * position.stockCount;
+      })
       .reduce((a, b) => a + b);
     return currentPortfolioValue - expenses;
   }
@@ -103,8 +111,6 @@ export class DashboardComponent implements OnInit {
   }
 
   private getData(quotesMap: Map<string, number>, positions: Position[]) {
-
-
     let data: Array<any> = [];
     positions.forEach(position => {
       data.push({

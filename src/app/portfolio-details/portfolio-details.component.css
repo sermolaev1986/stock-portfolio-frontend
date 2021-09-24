@@ -1,0 +1,14 @@
+.column-title-mobile {
+  display: inline-block;
+}
+
+@media (min-width: 960px){
+  .column-title-mobile {
+    display: none;
+  }
+}
+
+.future-dividend-row {
+  background: #b7d8f2 !important;
+}
+

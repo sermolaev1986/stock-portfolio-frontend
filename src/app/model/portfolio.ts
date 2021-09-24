@@ -16,6 +16,7 @@ export type PortfolioPosition = {
   stockCount: number,
   currentValue: number,
   buyValue: number,
+  buyDate: string,
   dividendsTotalAmountPaid: number,
   lastDividendDate: string,
   lastDividendAmount: number
