@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {NgModule, LOCALE_ID} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
@@ -8,25 +8,37 @@ import {CardModule} from "primeng/card";
 import {BadgeModule} from "primeng/badge";
 import {registerLocaleData} from "@angular/common";
 import localeAustria from '@angular/common/locales/de-AT';
-import { DividendsComponent } from './dividends/dividends.component';
 import {TableModule} from "primeng/table";
+import {RouterModule, Routes} from "@angular/router";
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { PortfolioDetailsComponent } from './portfolio-details/portfolio-details.component';
 
 registerLocaleData(localeAustria, 'de-AT');
+
+const routes: Routes = [
+  { path: '', component: DashboardComponent },
+  { path: 'portfolio-details', component: PortfolioDetailsComponent }
+];
 
 @NgModule({
   declarations: [
     AppComponent,
-    DividendsComponent
+    DashboardComponent,
+    PortfolioDetailsComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    RouterModule.forRoot(routes),
     ChartModule,
     CardModule,
     BadgeModule,
     TableModule
   ],
-  providers: [],
+  providers: [{
+    provide: LOCALE_ID,
+    useValue: 'de-AT'
+  },],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

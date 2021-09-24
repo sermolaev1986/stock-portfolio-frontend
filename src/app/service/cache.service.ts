@@ -5,14 +5,10 @@ import { Injectable } from '@angular/core';
 })
 export class CacheService {
 
-  private readonly CACHE_EXPIRATION_MILLIS = 180 * 60 * 1000;
-
-  constructor() { }
-
-  public save(key: string, object: any) {
+  public save(key: string, cacheExpiration: number, object: any) {
     const record = {
       value: JSON.stringify(object),
-      expiration: new Date().getTime() + this.CACHE_EXPIRATION_MILLIS,
+      expiration: new Date().getTime() + cacheExpiration,
       hasExpiration: true
     }
     localStorage.setItem(key, JSON.stringify(record))
