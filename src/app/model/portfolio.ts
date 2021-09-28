@@ -1,13 +1,10 @@
-export type Portfolio = {
-  positions: Position[]
-}
-
 export type Position = {
   symbol: string,
   stockCount: number,
   buyPrice: number,
   buyDate: string,
-  owner: string
+  owner: string,
+  dividends: number
 }
 
 export type PortfolioPosition = {

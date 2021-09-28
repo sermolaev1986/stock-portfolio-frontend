@@ -9,6 +9,16 @@ export type Dividend = {
   amount: number,
 }
 
+export type HerokuDividend = {
+  symbol: string,
+  dollarBruttoAmount: number,
+  dollarNettoAmount: number,
+  euroBruttoAmount: number,
+  euroNettoAmount: number,
+  paymentDate: string,
+  exDate: string
+}
+
 export class SplitAdjustedDividend {
   set euroNettoAmount(value: number) {
     this._euroNettoAmount = value;

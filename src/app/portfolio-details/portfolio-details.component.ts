@@ -5,7 +5,7 @@ import {StockQuoteService} from "../service/stock-quote.service";
 import {ActivatedRoute} from "@angular/router";
 import {PortfolioPosition} from "../model/portfolio";
 import {StockSymbolService} from "../service/stock-symbol.service";
-import {Dividends, SplitAdjustedDividend} from "../model/dividends";
+import {Dividend, Dividends, SplitAdjustedDividend} from "../model/dividends";
 import {StockSplitService} from "../service/stock-split.service";
 import {ExchangeRatesService} from "../service/exchange-rates.service";
 
@@ -35,13 +35,12 @@ export class PortfolioDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       let owner = params['owner'];
-      this.portfolioService.getPortfolio().then(positions => {
-        let symbols = [...new Set(positions.map(position => position.symbol))];
+      this.portfolioService.getPositionsByOwner(owner).then(ownerPositions => {
+        let symbols = [...new Set(ownerPositions.map(position => position.symbol))];
 
         this.stockQuoteService.getQuotes(symbols).then(quotes => {
           let quotesMap: Map<string, number> = new Map(quotes.data.map(quote => [quote.symbol, quote.close]));
 
-          let ownerPositions = positions.filter(value => value.owner === owner);
           this.positions = ownerPositions.map(position => {
             return {
               symbol: position.symbol,
@@ -57,12 +56,12 @@ export class PortfolioDetailsComponent implements OnInit {
           });
 
           ownerPositions.forEach(ownerPosition => {
-            this.dividendService.getDividends(ownerPosition.symbol, ownerPosition.buyDate).then((dividends: Dividends) => {
+            this.dividendService.getDividends(owner, ownerPosition.symbol, ownerPosition.buyDate).then((dividends: Array<Dividend>) => {
               this.stockSplitService.getSplits(ownerPosition.symbol).then(splits => {
                 let splitsAfterBuy = splits.results
                   .filter(split => new Date(split.paymentDate).getTime() > new Date(ownerPosition.buyDate).getTime());
 
-                let splitAdjustedDividends = dividends.results
+                let splitAdjustedDividends = dividends
                   .filter(dividend => new Date(dividend.paymentDate).getTime() > new Date(ownerPosition.buyDate).getTime())
                   .filter(dividend => new Date(dividend.exDate).getTime() > new Date(ownerPosition.buyDate).getTime())
                   .map(dividend => {
