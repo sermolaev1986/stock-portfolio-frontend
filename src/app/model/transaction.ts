@@ -1,22 +1,20 @@
-import {StockLookupResult} from "./stock-lookup";
-
 export type Transaction = {
-  stock: StockLookupResult;
-  argument: string;
+  stockSymbol: string;
+  stockCount: number;
   date: Date;
   type: string;
   owner: string,
   broker: string,
-  price?: number;
+  price: number;
 }
 
 export type HerokuTransaction = {
   symbol: string;
-  argument: string;
+  argument: number;
   operator: string;
   date: Date;
   owner: string;
   broker: string;
-  price?: number;
+  price: number;
 }
 

@@ -2,22 +2,20 @@ import {Injectable} from '@angular/core';
 import {Dividend, HerokuDividend} from "../model/dividends";
 import {HttpClient} from "@angular/common/http";
 import {map} from "rxjs/operators";
+import {Paths} from "../constants/paths";
 
 @Injectable({
   providedIn: 'root'
 })
 export class HerokuDividendService {
 
-  private readonly basePath = "https://chubr-stock-portfolio.herokuapp.com/v1";
-
   constructor(private readonly http: HttpClient) {
   }
 
-  getDividends(symbol: string, owner: string): Promise<Array<Dividend>> {
-    return this.http.get<Array<HerokuDividend>>(`${this.basePath}/dividends?symbol=${symbol}&owner=${owner}`)
-      .pipe(map(response => this.getUniqueListByPaymentDate(response)
-        .map(it => this.convertDividend(it))))
-      .toPromise();
+  public getDividends(symbol: string, owner: string): Promise<Array<HerokuDividend>> {
+    return this.http.get<Array<HerokuDividend>>(`${Paths.HEROKU_API_PATH}/dividends?symbol=${symbol}&owner=${owner}`)
+      .pipe(map(response => this.getUniqueListByPaymentDate(response)))
+      .toPromise()
   }
 
   private convertDividend(dividend: HerokuDividend): Dividend {

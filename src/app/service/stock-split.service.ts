@@ -4,7 +4,7 @@ import {CacheService} from "./cache.service";
 import {StockSymbolService} from "./stock-symbol.service";
 import {tap} from "rxjs/operators";
 import {Splits} from "../model/splits";
-import {ApiKeys} from "../api-keys/api-keys";
+import {ApiKeys} from "../constants/api-keys";
 
 @Injectable({
   providedIn: 'root'
@@ -24,10 +24,6 @@ export class StockSplitService {
 
   public getSplits(symbol: string): Promise<Splits> {
     let usSymbol = this.stockSymbolService.getUsSymbol(symbol);
-    if (symbol !== "APC") {
-      //temporarily only for Apple to save some requests
-      usSymbol = undefined;
-    }
     if (!usSymbol) {
       console.log(`no us symbol found for ${symbol}`);
       return Promise.resolve({results: []});

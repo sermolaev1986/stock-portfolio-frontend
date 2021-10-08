@@ -1,7 +1,7 @@
 export type Position = {
   symbol: string,
   stockCount: number,
-  buyPrice: number,
+  investments: number,
   buyDate: string,
   owner: string,
   dividends: number
@@ -15,6 +15,10 @@ export type PortfolioPosition = {
   buyValue: number,
   buyDate: string,
   dividendsTotalAmountPaid: number,
-  lastDividendDate: string,
-  lastDividendAmount: number
+  profit: number
+}
+
+export type Portfolio = {
+  investments: number,
+  positions: Array<Position>
 }

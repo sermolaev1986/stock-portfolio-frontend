@@ -1,10 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {CacheService} from "./cache.service";
-import {Dividend, Dividends} from "../model/dividends";
+import {Dividends, HerokuDividend} from "../model/dividends";
 import {StockSymbolService} from "./stock-symbol.service";
-import {map, tap} from "rxjs/operators";
-import {ApiKeys} from "../api-keys/api-keys";
 import {HerokuDividendService} from "./heroku-dividend.service";
 
 @Injectable({
@@ -26,7 +24,7 @@ export class DividendService {
               private readonly herokuDividendService: HerokuDividendService) {
   }
 
-  public getDividends(owner: string, symbol: string, dateFrom: string): Promise<Array<Dividend>> {
+  public getDividends(owner: string, symbol: string, dateFrom: string): Promise<Array<HerokuDividend>> {
     if (!this.isDividendStock(symbol)) {
       console.log(`calling heroku api to get dividends for symbol ${symbol}`);
       return this.herokuDividendService.getDividends(symbol, owner);
@@ -40,13 +38,14 @@ export class DividendService {
       let dividends = this.cacheService.load(this.getCacheKey(symbol));
       if (dividends == null) {
         console.log("Cache is empty, calling API");
-        let headers = new HttpHeaders();
+        /*let headers = new HttpHeaders();
         return this.http.get<Dividends>(`${this.basePath}/reference/dividends/${usSymbol}?&apiKey=${ApiKeys.POLYGON_IO_API_KEY}`,
           {headers: headers})
           .pipe(
             tap(response => this.cacheResponse(response, symbol)),
             map(response => response.results))
-          .toPromise();
+          .toPromise();*/
+        return Promise.resolve([]);
       } else {
         console.log("Cache is found, returning from cache");
         return Promise.resolve(dividends.results);
@@ -57,7 +56,7 @@ export class DividendService {
   }
 
   public isDividendStock(symbol: string): boolean {
-    return this.dividendStocks.has(symbol);
+    return false;
   }
 
   private getCacheKey(symbol: string): string {

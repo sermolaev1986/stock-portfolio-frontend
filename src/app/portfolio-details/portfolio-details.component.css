@@ -1,14 +1,15 @@
-.column-title-mobile {
-  display: inline-block;
+.column-desktop {
+  visibility: visible;
 }
 
-@media (min-width: 960px){
-  .column-title-mobile {
-    display: none;
+@media (max-width: 530px){
+  .column-desktop {
+    display:none;
   }
 }
 
-.future-dividend-row {
-  background: #b7d8f2 !important;
+.my-logo {
+  vertical-align: middle;
+  width: 32px;
+  margin-right: 5px;
 }
-

@@ -1,33 +1,59 @@
+<p-toast position="bottom-center" class="my-toast"></p-toast>
 <div class="my-form-container">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <h5>Stock</h5>
-    <p-autoComplete [suggestions]="results" (completeMethod)="search($event)" field="description" name="stock"
-                    id="stock" formControlName="stock">
-    </p-autoComplete>
+    <div class="my-input-group">
+      <div class="my-first-input">
+        <h5>Aktie</h5>
+        <p-autoComplete [suggestions]="results" (completeMethod)="search($event)" field="description" name="stock"
+                        id="stock" formControlName="stock">
+        </p-autoComplete>
+      </div>
 
-    <h5>Owner</h5>
-    <p-selectButton [options]="ownerOptions" formControlName="owner" optionLabel="owner"></p-selectButton>
+      <div>
+        <h5>Besitzer</h5>
+        <p-selectButton [options]="ownerOptions" formControlName="owner" optionLabel="owner"></p-selectButton>
+      </div>
 
-    <h5>Broker</h5>
-    <p-selectButton [options]="brokerOptions" formControlName="broker" optionLabel="broker"></p-selectButton>
+    </div>
 
-    <h5>Transaction type</h5>
-    <p-selectButton [options]="transactionTypeOptions" formControlName="type" optionLabel="type"></p-selectButton>
+    <div class="my-input-group">
 
-    <h5>Argument</h5>
-    <p-inputNumber class="form-control" formControlName="argument" name="argument"></p-inputNumber>
+      <div class="my-first-input">
+        <h5>Broker</h5>
+        <p-selectButton [options]="brokerOptions" formControlName="broker" optionLabel="broker"></p-selectButton>
+      </div>
 
-    <h5>Price</h5>
-    <p-inputNumber class="form-control" formControlName="price" name="price"></p-inputNumber>
+      <div>
+        <h5>Transaktionstyp</h5>
+        <p-selectButton [options]="transactionTypeOptions" formControlName="type" optionLabel="type"></p-selectButton>
+      </div>
 
-    <h5>Transaction date</h5>
-    <p-calendar formControlName="date" [showIcon]="true" name="date"></p-calendar>
+    </div>
+
+    <div class="my-input-group">
+      <div class="my-first-input">
+        <h5>Anzahl</h5>
+        <p-inputNumber class="form-control" formControlName="stockCount" name="stockCount"></p-inputNumber>
+      </div>
+
+      <div>
+        <h5>Preis</h5>
+        <p-inputNumber class="form-control" formControlName="price" name="price"></p-inputNumber>
+      </div>
+    </div>
+
+    <div>
+      <h5>Transaction date</h5>
+      <p-calendar formControlName="date" [showIcon]="true" name="date"></p-calendar>
+    </div>
+
 
     <div class="p-field my-submit-button">
       <p-button type="submit" [ngClass]="form.valid? 'green':'red'" [disabled]="!form.valid" label="Submit"></p-button>
     </div>
-
   </form>
+
 </div>
+
 
 

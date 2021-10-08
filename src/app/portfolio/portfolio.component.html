@@ -1,0 +1,10 @@
+<div class="card">
+  <h2>
+    <a routerLink="/portfolio-details" [queryParams]="{owner: owner}">{{owner}}</a>
+  </h2>
+  <p-chart type="doughnut" [data]="chartData" [options]="basicOptions"></p-chart>
+  <p-card class="my-card">
+    <p-badge severity="warning" [value]="totalExpenses"></p-badge>
+    <p-badge severity="success" [value]="totalProfit"></p-badge>
+  </p-card>
+</div>

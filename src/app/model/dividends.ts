@@ -11,10 +11,14 @@ export type Dividend = {
 
 export type HerokuDividend = {
   symbol: string,
+  shareAmount: string,
   dollarBruttoAmount: number,
   dollarNettoAmount: number,
   euroBruttoAmount: number,
   euroNettoAmount: number,
+  euroBruttoFromFrontendAmount?: number,
+  euroNettoFromFrontendAmount?: number,
+  amountPerShare: number
   paymentDate: string,
   exDate: string
 }

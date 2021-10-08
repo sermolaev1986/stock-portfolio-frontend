@@ -1,0 +1,21 @@
+.column-desktop {
+  display: inline-block;
+}
+
+@media (min-width: 960px){
+  .column-desktop {
+    display: none;
+  }
+}
+
+.future-dividend-row {
+  background: #b7d8f2 !important;
+}
+
+.my-logo {
+  width: 60px;
+}
+
+.my-header {
+  text-align: center;
+}

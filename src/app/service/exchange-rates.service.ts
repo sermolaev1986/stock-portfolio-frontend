@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {CacheService} from "./cache.service";
 import {tap} from "rxjs/operators";
 import {ExchangeRates} from "../model/exchangeRates";
-import {ApiKeys} from "../api-keys/api-keys";
+import {ApiKeys} from "../constants/api-keys";
 
 @Injectable({
   providedIn: 'root'

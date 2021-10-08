@@ -2,6 +2,21 @@
   padding: 20px 50px;
 }
 
+.my-toast {
+  display: flex;
+  width: 10px;
+}
+
+.my-first-input {
+  margin-right: 20px;
+  min-width: 200px;
+}
+
+.my-input-group {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .my-submit-button {
   margin-top: 20px;
 }

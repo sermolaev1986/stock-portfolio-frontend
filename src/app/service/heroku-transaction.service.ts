@@ -1,42 +1,36 @@
 import {Injectable} from '@angular/core';
 import {HerokuTransaction, Transaction} from "../model/transaction";
 import {HttpClient} from "@angular/common/http";
+import {Paths} from "../constants/paths";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class HerokuTransactionService {
 
-  private readonly basePath = "https://chubr-stock-portfolio.herokuapp.com/v1";
-
   constructor(private readonly http: HttpClient) {
   }
 
-  public createTransaction(transaction: Transaction) {
-    if (!transaction.owner || !transaction.argument || !transaction.broker) {
-      return;
-    }
-
-    if ((transaction.type === "Buy" || transaction.type === "Sell") && !transaction.price) {
-      return;
+  public createTransaction(transaction: Transaction): Promise<any> {
+    if (!transaction.owner || !transaction.stockCount || !transaction.broker || !transaction.price) {
+      return Promise.resolve();
     }
 
     let operator = "";
-    if (transaction.type === "Stock Split") {
-      operator = "MULTIPLY";
-    } else if (transaction.type === "Buy") {
+    if (transaction.type === "Buy") {
       operator = "PLUS";
     } else if (transaction.type === "Sell") {
       operator = "MINUS";
     } else {
-      return;
+      return Promise.resolve();
     }
 
-    let symbol = transaction.stock?.symbol;
+    let symbol = transaction.stockSymbol;
     if (symbol) {
       symbol = symbol.replace('.F', '');
     } else {
-      return;
+      return Promise.resolve();
     }
 
     let herokuTransaction: HerokuTransaction = {
@@ -45,10 +39,10 @@ export class HerokuTransactionService {
       owner: transaction.owner,
       broker: transaction.broker,
       price: transaction.price,
-      argument: transaction.argument,
+      argument: transaction.stockCount,
       operator: operator
     };
 
-    this.http.post(`${this.basePath}/transactions`, herokuTransaction).subscribe();
+    return this.http.post(`${Paths.HEROKU_API_PATH}/transactions`, herokuTransaction).toPromise();
   }
 }

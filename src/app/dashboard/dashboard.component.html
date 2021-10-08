@@ -1,35 +1,8 @@
 <div class="my-container">
   <div class="my-diagrams-container">
-    <div class="card">
-      <h2>
-        <a routerLink="/portfolio-details" [queryParams]="{owner: 'Andrei'}">Andrei</a>
-      </h2>
-      <p-chart type="doughnut" [data]="andreiData" [options]="basicOptions"></p-chart>
-      <p-card class="my-card">
-        <p-badge severity="warning" [value]="andreiTotalExpenses"></p-badge>
-        <p-badge severity="success" [value]="andreiTotalProfit"></p-badge>
-      </p-card>
-    </div>
-    <div class="card">
-      <h2>
-        <a routerLink="/portfolio-details" [queryParams]="{owner: 'Olga'}">Olga</a>
-      </h2>
-      <p-chart type="doughnut" [data]="olgaData" [options]="basicOptions"></p-chart>
-      <p-card class="my-card">
-        <p-badge severity="warning" [value]="olgaTotalExpenses"></p-badge>
-        <p-badge severity="success" [value]="olgaTotalProfit"></p-badge>
-      </p-card>
-    </div>
-    <div class="card">
-      <h2>
-        <a routerLink="/portfolio-details" [queryParams]="{owner: 'Sergei'}">Sergei</a>
-      </h2>
-      <p-chart type="doughnut" [data]="sergeiData" [options]="basicOptions"></p-chart>
-      <p-card class="my-card">
-        <p-badge severity="warning" [value]="sergeiTotalExpenses"></p-badge>
-        <p-badge severity="success" [value]="sergeiTotalProfit"></p-badge>
-      </p-card>
-    </div>
+    <app-portfolio [portfolio]="andreiPortfolio" [owner]="'Andrei'"></app-portfolio>
+    <app-portfolio [portfolio]="olgaPortfolio" [owner]="'Olga'"></app-portfolio>
+    <app-portfolio [portfolio]="sergeiPortfolio" [owner]="'Sergei'"></app-portfolio>
   </div>
   <div>
     <a routerLink="/transaction-wizard">Add transaction</a>

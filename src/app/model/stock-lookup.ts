@@ -3,10 +3,13 @@ export type StockLookupResponse = {
   result: Array<StockLookupResult>;
 }
 
-export type StockLookupResult = {
-  description: string;
-  symbol: string;
-  displaySymbol: string;
-  type: string;
+export class StockLookupResult {
+
+  constructor(public description: string, public symbol: string, public displaySymbol: string, public type: string) {
+  }
 }
 
+export type CompanyProfile = {
+  name: string;
+  logo: string;
+}

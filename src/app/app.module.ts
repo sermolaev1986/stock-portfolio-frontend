@@ -6,7 +6,7 @@ import {ChartModule} from "primeng/chart";
 import {HttpClientModule} from "@angular/common/http";
 import {CardModule} from "primeng/card";
 import {BadgeModule} from "primeng/badge";
-import {registerLocaleData} from "@angular/common";
+import {PercentPipe, registerLocaleData} from "@angular/common";
 import localeAustria from '@angular/common/locales/de-AT';
 import {TableModule} from "primeng/table";
 import {RouterModule, Routes} from "@angular/router";
@@ -21,6 +21,8 @@ import {CalendarModule} from 'primeng/calendar';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {InputNumberModule} from "primeng/inputnumber";
 import {SelectButtonModule} from 'primeng/selectbutton';
+import {ToastModule} from 'primeng/toast';
+import {PortfolioComponent} from "./portfolio/portfolio.component";
 
 registerLocaleData(localeAustria, 'de-AT');
 
@@ -37,7 +39,8 @@ const routes: Routes = [
     DashboardComponent,
     PortfolioDetailsComponent,
     TransactionWizardComponent,
-    DividendListComponent
+    DividendListComponent,
+    PortfolioComponent
   ],
   imports: [
     BrowserModule,
@@ -53,12 +56,13 @@ const routes: Routes = [
     CalendarModule,
     AutoCompleteModule,
     InputNumberModule,
-    SelectButtonModule
+    SelectButtonModule,
+    ToastModule
   ],
   providers: [{
     provide: LOCALE_ID,
     useValue: 'de-AT'
-  },],
+  }, PercentPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {

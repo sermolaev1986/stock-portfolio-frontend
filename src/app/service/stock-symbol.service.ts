@@ -29,20 +29,29 @@ export class StockSymbolService {
     ["PRG", "Procter & Gamble"],
     ["2PP", "PayPal"],
     ["13T1", "TCS Group"],
+    ["VWCE", "FTSE All-World"],
+    ["VUAA", "S&P 500"],
+    ["GQ9", "Gold Trust"],
+    ["CCC3", "Coca-Cola"],
+    ["AMD", "AMD"],
+    ["NFC", "Netflix"],
+    ["E3M", "EPAM"],
+    ["FOO", "Salesforce"],
+    ["NVD", "Nvidia"]
   ]);
 
   private readonly usSymbolMap = new Map([
     ["APC", "AAPL"],
     ["MSF", "MSFT"],
     ["CSA", "ACN"],
-    // ["RTS2", "RTS2"],
+    ["RTS2", "SVJTY"],
     ["XONA", "XOM"],
-    // ["SOBA", "AT&T"],
+    ["SOBA", "T"],
     ["WX2", "FRT"],
     ["PEP", "PEP"],
     ["WDP", "DIS"],
     ["AMZ", "AMZN"],
-    // ["LUK", "Lukoil"],
+    ["LUK", "LKOH"],
     ["PFE", "PFE"],
     ["AIY", "ATVI"],
     ["BCO", "BA"],
@@ -50,7 +59,15 @@ export class StockSymbolService {
     ["TEV", "TEVA"],
     ["1YD", "AVGO"],
     ["HDI", "HD"],
-    ["PRG", "PG"]
+    ["PRG", "PG"],
+    ["2PP", "PYPL"],
+    ["13T1", "TCSG"],
+    ["CCC3", "KO"],
+    ["NFC", "NFLX"],
+    ["E3M", "EPAM"],
+    ["FOO", "CRM"],
+    ["NVD", "NVDA"],
+    ["AMD", "AMD"]
   ]);
 
   constructor() { }
@@ -64,8 +81,13 @@ export class StockSymbolService {
     }
   }
 
-  public getUsSymbol(symbol: string) {
-    return this.usSymbolMap.get(symbol);
+  public getUsSymbol(symbol: string): string {
+    let name = this.usSymbolMap.get(symbol);
+    if (name) {
+      return name;
+    } else {
+      return symbol;
+    }
   }
 
   public appendExchangeSymbol(symbol: string) {
