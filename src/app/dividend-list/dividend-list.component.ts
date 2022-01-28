@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {DividendService} from "../service/dividend.service";
 import {ActivatedRoute} from "@angular/router";
 import {HerokuDividend} from "../model/dividends";
-import {ExchangeRatesService} from "../service/exchange-rates.service";
 import {StockLookupService} from "../service/stock-lookup.service";
 import {StockSymbolService} from "../service/stock-symbol.service";
+import {HerokuDividendService} from "../service/heroku-dividend.service";
 
 @Component({
   selector: 'app-dividend-list',
@@ -18,8 +17,7 @@ export class DividendListComponent implements OnInit {
   public companyName: string = "";
   public logo: string = "";
 
-  constructor(private readonly dividendService: DividendService,
-              private readonly exchangeRatesService: ExchangeRatesService,
+  constructor(private readonly dividendService: HerokuDividendService,
               private readonly stockLookupService: StockLookupService,
               private readonly stockSymbolService: StockSymbolService,
               private readonly route: ActivatedRoute) {
@@ -30,7 +28,7 @@ export class DividendListComponent implements OnInit {
       this.owner = params['owner'];
       let symbol = params['symbol'];
 
-      this.dividendService.getDividends(this.owner, symbol, "").then(dividends => {
+      this.dividendService.getDividends(this.owner, symbol).then(dividends => {
         this.dividends = dividends;
       });
 

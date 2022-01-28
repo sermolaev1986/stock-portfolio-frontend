@@ -1,5 +1,6 @@
 export type Position = {
   symbol: string,
+  name: string,
   stockCount: number,
   investments: number,
   buyDate: string,

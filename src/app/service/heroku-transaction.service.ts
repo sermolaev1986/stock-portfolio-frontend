@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {HerokuTransaction, Transaction} from "../model/transaction";
 import {HttpClient} from "@angular/common/http";
 import {Paths} from "../constants/paths";
-import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'

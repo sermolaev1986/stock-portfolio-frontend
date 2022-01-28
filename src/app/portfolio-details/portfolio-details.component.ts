@@ -23,8 +23,7 @@ export class PortfolioDetailsComponent implements OnInit {
               private readonly stockQuoteService: StockQuoteService,
               private readonly route: ActivatedRoute,
               private readonly stockSymbolService: StockSymbolService,
-              private readonly stockLookupService: StockLookupService,
-              private readonly percentPipe: PercentPipe) {
+              private readonly stockLookupService: StockLookupService) {
   }
 
   ngOnInit(): void {
@@ -36,13 +35,13 @@ export class PortfolioDetailsComponent implements OnInit {
           .map(position => {
             return {
               symbol: position.symbol,
-              name: this.stockSymbolService.getNameForSymbol(position.symbol),
+              name: position.name,
               stockCount: position.stockCount,
               currentValue: 0,
               buyValue: position.investments,
               buyDate: position.buyDate,
               dividendsTotalAmountPaid: position.dividends,
-              profit: position.investments * -1
+              profit: position.investments * -0.725
             }
           });
 
@@ -56,15 +55,15 @@ export class PortfolioDetailsComponent implements OnInit {
           });
         });
 
-        this.stockQuoteService.getQuotes(symbols.map(value => this.stockSymbolService.appendExchangeSymbol(value))).then(quotes => {
-          let quotesMap: Map<string, number> = new Map(quotes.data.map(quote => [quote.symbol, quote.close]));
+        this.stockQuoteService.getQuotes(symbols).then(quotes => {
+          let quotesMap: Map<string, number> = new Map(quotes.map(quote => [quote.symbol, quote.price]));
 
           this.positions = currentPositions.map(position => {
-            let currentValue = this.getValue(quotesMap, this.stockSymbolService.appendExchangeSymbol(position.symbol)) * position.stockCount;
+            let currentValue = this.getValue(quotesMap, position.symbol) * position.stockCount;
 
             return {
               symbol: position.symbol,
-              name: this.stockSymbolService.getNameForSymbol(position.symbol),
+              name: position.name,
               stockCount: position.stockCount,
               currentValue: currentValue,
               buyValue: position.investments,

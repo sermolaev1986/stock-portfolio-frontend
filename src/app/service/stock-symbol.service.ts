@@ -7,39 +7,6 @@ export class StockSymbolService {
 
   private readonly exchangeSymbol = "XFRA";
 
-  private readonly symbolToNameMap = new Map([
-    ["APC", "Apple"],
-    ["MSF", "Microsoft"],
-    ["CSA", "Accenture"],
-    ["RTS2", "Severstal"],
-    ["XONA", "Exxon"],
-    ["SOBA", "AT&T"],
-    ["WX2", "FRIT"],
-    ["PEP", "Pepsi"],
-    ["WDP", "Disney"],
-    ["AMZ", "Amazon"],
-    ["LUK", "Lukoil"],
-    ["PFE", "Pfizer"],
-    ["AIY", "Blizzard"],
-    ["BCO", "Boeing"],
-    ["11L1", "Canopy Growth"],
-    ["TEV", "Teva"],
-    ["1YD", "Broadcom"],
-    ["HDI", "Home Depot"],
-    ["PRG", "Procter & Gamble"],
-    ["2PP", "PayPal"],
-    ["13T1", "TCS Group"],
-    ["VWCE", "FTSE All-World"],
-    ["VUAA", "S&P 500"],
-    ["GQ9", "Gold Trust"],
-    ["CCC3", "Coca-Cola"],
-    ["AMD", "AMD"],
-    ["NFC", "Netflix"],
-    ["E3M", "EPAM"],
-    ["FOO", "Salesforce"],
-    ["NVD", "Nvidia"]
-  ]);
-
   private readonly usSymbolMap = new Map([
     ["APC", "AAPL"],
     ["MSF", "MSFT"],
@@ -71,15 +38,6 @@ export class StockSymbolService {
   ]);
 
   constructor() { }
-
-  public getNameForSymbol(symbol: string): string {
-    let name = this.symbolToNameMap.get(symbol);
-    if (name) {
-      return name;
-    } else {
-      return symbol;
-    }
-  }
 
   public getUsSymbol(symbol: string): string {
     let name = this.usSymbolMap.get(symbol);
