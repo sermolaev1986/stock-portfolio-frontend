@@ -14,7 +14,8 @@
     <tr>
       <td><img src="{{logoMap.get(position.usSymbol)}}" class="my-logo">{{position.name}}</td>
       <td>{{position.stockCount}}</td>
-      <td>{{position.buyValue | currency:'EUR'}}
+      <td>
+        <a routerLink="/transactions" [queryParams]="{owner: owner, symbol: position.symbol}">{{position.buyValue | currency:'EUR'}}</a>
       </td>
       <td>{{position.currentValue | currency: 'EUR'}}
       </td>

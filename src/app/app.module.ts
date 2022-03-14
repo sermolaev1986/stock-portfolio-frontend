@@ -24,6 +24,7 @@ import {SelectButtonModule} from 'primeng/selectbutton';
 import {ToastModule} from 'primeng/toast';
 import {PortfolioComponent} from "./portfolio/portfolio.component";
 import { SoldPositionsComponent } from './sold-positions/sold-positions.component';
+import { TransactionsComponent } from './transactions/transactions.component';
 
 registerLocaleData(localeAustria, 'de-AT');
 
@@ -31,6 +32,7 @@ const routes: Routes = [
   {path: '', component: DashboardComponent},
   {path: 'portfolio-details', component: PortfolioDetailsComponent},
   {path: 'dividend-list', component: DividendListComponent},
+  {path: 'transactions', component: TransactionsComponent},
   {path: 'transaction-wizard', component: TransactionWizardComponent}
 ];
 
@@ -42,7 +44,8 @@ const routes: Routes = [
     TransactionWizardComponent,
     DividendListComponent,
     PortfolioComponent,
-    SoldPositionsComponent
+    SoldPositionsComponent,
+    TransactionsComponent
   ],
   imports: [
     BrowserModule,

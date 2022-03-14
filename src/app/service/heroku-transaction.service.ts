@@ -36,12 +36,16 @@ export class HerokuTransactionService {
       symbol: symbol,
       date: transaction.date,
       owner: transaction.owner,
-      broker: transaction.broker,
       price: transaction.price,
       argument: transaction.stockCount,
       operator: operator
     };
 
     return this.http.post(`${Paths.HEROKU_API_PATH}/transactions`, herokuTransaction).toPromise();
+  }
+
+  public getTransactions(owner: string, symbol: string): Promise<Array<HerokuTransaction>> {
+    return this.http.get<Array<HerokuTransaction>>(`${Paths.HEROKU_API_PATH}/transactions?owner=${owner}&symbol=${symbol}`)
+      .toPromise();
   }
 }

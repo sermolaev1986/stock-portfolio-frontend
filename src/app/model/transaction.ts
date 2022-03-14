@@ -14,7 +14,6 @@ export type HerokuTransaction = {
   operator: string;
   date: Date;
   owner: string;
-  broker: string;
   price: number;
 }
 
