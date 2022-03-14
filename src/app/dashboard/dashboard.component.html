@@ -1,8 +1,8 @@
-<div class="my-container">
+<div class="top-level-container">
   <div class="my-diagrams-container">
-    <app-portfolio [portfolio]="andreiPortfolio" [owner]="'Andrei'"></app-portfolio>
-    <app-portfolio [portfolio]="olgaPortfolio" [owner]="'Olga'"></app-portfolio>
-    <app-portfolio [portfolio]="sergeiPortfolio" [owner]="'Sergei'"></app-portfolio>
+    <app-portfolio class="portfolio-container" [portfolio]="andreiPortfolio" [owner]="'Andrei'"></app-portfolio>
+    <app-portfolio class="portfolio-container" [portfolio]="olgaPortfolio" [owner]="'Olga'"></app-portfolio>
+    <app-portfolio class="portfolio-container" [portfolio]="sergeiPortfolio" [owner]="'Sergei'"></app-portfolio>
   </div>
   <div>
     <a routerLink="/transaction-wizard">Add transaction</a>

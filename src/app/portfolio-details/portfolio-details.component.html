@@ -3,8 +3,8 @@
   <ng-template pTemplate="header">
     <tr>
       <th>Name</th>
-      <th class="column-desktop">Kaufdatum</th>
-      <th class="column-desktop">Einstandswert</th>
+      <th>Stk</th>
+      <th>Einstandswert</th>
       <th>Marktwert</th>
       <th>Gewinn</th>
       <th>Dividende</th>
@@ -13,8 +13,8 @@
   <ng-template pTemplate="body" let-position>
     <tr>
       <td><img src="{{logoMap.get(position.usSymbol)}}" class="my-logo">{{position.name}}</td>
-      <td class="column-desktop">{{position.buyDate | date}}</td>
-      <td class="column-desktop">{{position.buyValue | currency:'EUR'}}
+      <td>{{position.stockCount}}</td>
+      <td>{{position.buyValue | currency:'EUR'}}
       </td>
       <td>{{position.currentValue | currency: 'EUR'}}
       </td>

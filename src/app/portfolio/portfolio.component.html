@@ -4,7 +4,14 @@
   </h2>
   <p-chart type="doughnut" [data]="chartData" [options]="basicOptions"></p-chart>
   <p-card class="my-card">
-    <p-badge severity="warning" [value]="totalExpenses"></p-badge>
-    <p-badge severity="success" [value]="totalProfitString"></p-badge>
+    <div class="statistics-container">
+      <div class="portfolio-value-container">
+        <p-card [style]="{'background': '#ffa726'}">{{currentPortfolioValue | currency: 'EUR'}}</p-card>
+      </div>
+      <div class="profit-investments-container">
+        <div class="container-with-padding margin-bottom card-green">{{totalProfit | currency: 'EUR'}}</div>
+        <div class="container-with-padding card-blue">{{portfolio?.investments | currency: 'EUR'}}</div>
+      </div>
+    </div>
   </p-card>
 </div>

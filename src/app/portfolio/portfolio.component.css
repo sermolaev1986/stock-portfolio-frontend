@@ -1,3 +1,36 @@
 .my-card {
   text-align: center;
 }
+
+.profit-investments-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.statistics-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.portfolio-value-container {
+  display: flex;
+  align-items: center;
+}
+
+.margin-bottom {
+  margin-bottom: 10px;
+}
+
+.card-green {
+  background: #66bb6a;
+}
+
+.card-blue {
+  background: rgb(66 165 245);
+}
+
+.container-with-padding {
+  padding: 5px 20px;
+  box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+  border-radius: 3px;
+}

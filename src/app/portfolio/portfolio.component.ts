@@ -2,7 +2,6 @@ import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Portfolio, Position} from "../model/portfolio";
 import {StockSymbolService} from "../service/stock-symbol.service";
 import {StockQuoteService} from "../service/stock-quote.service";
-import {formatCurrency} from "@angular/common";
 
 @Component({
   selector: 'app-portfolio',
@@ -18,9 +17,8 @@ export class PortfolioComponent implements OnChanges {
   owner: string | undefined;
 
   public chartData: any = [];
-  public totalExpenses = "";
   public totalProfit = 0;
-  public totalProfitString = "";
+  public currentPortfolioValue = 0;
 
   basicOptions = {
     plugins: {
@@ -30,6 +28,7 @@ export class PortfolioComponent implements OnChanges {
       responsive: true
     }
   };
+  someStyle = {'background': 'red'}
 
   constructor(private readonly stockSymbolService: StockSymbolService,
               private readonly stockQuoteService: StockQuoteService) {
@@ -43,34 +42,20 @@ export class PortfolioComponent implements OnChanges {
         let quotesMap: Map<string, number> = new Map(quotes.map(quote => [quote.symbol, quote.price]));
 
         if (this.portfolio) {
-          this.totalExpenses = this.formatToCurrencyString(this.portfolio.investments);
-          this.totalProfit += this.getTotalProfit(this.portfolio.investments, this.portfolio.positions, quotesMap);
-          this.totalProfitString = this.formatToCurrencyString(this.totalProfit);
+          this.currentPortfolioValue = this.getCurrentPortfolioValue(this.portfolio.positions, quotesMap);
+          this.totalProfit = this.currentPortfolioValue - this.portfolio.investments;
           this.chartData = this.getData(quotesMap, this.portfolio.positions);
         }
       });
     }
   }
 
-  private formatToCurrencyString(amount: number): string {
-    return formatCurrency(amount, "de-AT", "EUR");
-  }
-
-  private getTotalProfit(expenses: number, positions: Position[], quotesMap: Map<string, number>): number {
-    let currentPortfolioValue = positions
+  private getCurrentPortfolioValue(positions: Position[], quotesMap: Map<string, number>): number {
+    return positions
       .map(position => {
-        return this.getValue(quotesMap, position.symbol) * position.stockCount;
+        return PortfolioComponent.getValue(quotesMap, position.symbol) * position.stockCount;
       })
       .reduce((a, b) => a + b);
-    return currentPortfolioValue - expenses;
-  }
-
-  private getValue(map: Map<string, number>, key: string): number {
-    let value = map.get(key);
-    if (!value) {
-      value = 0;
-    }
-    return value;
   }
 
   private getData(quotesMap: Map<string, number>, positions: Position[]) {
@@ -78,7 +63,7 @@ export class PortfolioComponent implements OnChanges {
     positions.forEach(position => {
       data.push({
         name: position.name,
-        price: this.getValue(quotesMap, position.symbol) * position.stockCount
+        price: PortfolioComponent.getValue(quotesMap, position.symbol) * position.stockCount
       });
     });
 
@@ -124,6 +109,14 @@ export class PortfolioComponent implements OnChanges {
         }
       ]
     };
+  }
+
+  private static getValue(map: Map<string, number>, key: string): number {
+    let value = map.get(key);
+    if (!value) {
+      value = 0;
+    }
+    return value;
   }
 
 }
