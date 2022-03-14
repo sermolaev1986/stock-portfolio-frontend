@@ -9,7 +9,6 @@
       <th>amount per share</th>
       <th>split adjusted stock count</th>
       <th>dollar brutto amount</th>
-      <th>dollar netto amount</th>
       <th>euro brutto amount</th>
       <th>euro netto amount</th>
     </tr>
@@ -21,8 +20,6 @@
       <td>{{dividend.shareAmount}}
       </td>
       <td>{{dividend.dollarBruttoAmount | currency: 'USD':'symbol':'1.2-4'}}
-      </td>
-      <td>{{dividend.dollarNettoAmount | currency: 'USD':'symbol':'1.2-4'}}
       </td>
       <td>{{dividend.euroBruttoAmount | currency: 'EUR'}}
       </td>

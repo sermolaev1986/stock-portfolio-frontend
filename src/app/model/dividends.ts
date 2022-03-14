@@ -1,19 +1,7 @@
-export type Dividends = {
-  results: Dividend[]
-}
-
-export type Dividend = {
-  ticker: string,
-  paymentDate: string,
-  exDate: string,
-  amount: number,
-}
-
 export type HerokuDividend = {
   symbol: string,
   shareAmount: string,
   dollarBruttoAmount: number,
-  dollarNettoAmount: number,
   euroBruttoAmount: number,
   euroNettoAmount: number,
   euroBruttoFromFrontendAmount?: number,

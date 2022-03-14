@@ -1,5 +1,6 @@
 export type Position = {
   symbol: string,
+  usSymbol: string,
   name: string,
   stockCount: number,
   investments: number,
@@ -10,6 +11,7 @@ export type Position = {
 
 export type PortfolioPosition = {
   symbol: string,
+  usSymbol: string,
   name: string,
   stockCount: number,
   currentValue: number,

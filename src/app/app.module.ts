@@ -23,6 +23,7 @@ import {InputNumberModule} from "primeng/inputnumber";
 import {SelectButtonModule} from 'primeng/selectbutton';
 import {ToastModule} from 'primeng/toast';
 import {PortfolioComponent} from "./portfolio/portfolio.component";
+import { SoldPositionsComponent } from './sold-positions/sold-positions.component';
 
 registerLocaleData(localeAustria, 'de-AT');
 
@@ -40,7 +41,8 @@ const routes: Routes = [
     PortfolioDetailsComponent,
     TransactionWizardComponent,
     DividendListComponent,
-    PortfolioComponent
+    PortfolioComponent,
+    SoldPositionsComponent
   ],
   imports: [
     BrowserModule,

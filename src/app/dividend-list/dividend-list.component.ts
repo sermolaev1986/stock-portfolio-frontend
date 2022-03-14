@@ -27,12 +27,13 @@ export class DividendListComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.owner = params['owner'];
       let symbol = params['symbol'];
+      let usSymbol = params['usSymbol'];
 
       this.dividendService.getDividends(this.owner, symbol).then(dividends => {
         this.dividends = dividends;
       });
 
-      this.stockLookupService.getCompanyProfile(this.stockSymbolService.getUsSymbol(symbol)).then(companyProfile => {
+      this.stockLookupService.getCompanyProfile(usSymbol).then(companyProfile => {
         this.companyName = companyProfile.name;
         this.logo = companyProfile.logo;
       });

@@ -16,8 +16,14 @@ export class PortfolioService {
 
   }
 
-  public getPositionsByOwner(owner: string): Promise<Array<Position>> {
-    return this.httpClient.get<Array<Position>>(Paths.HEROKU_API_PATH + `/positions/username/${owner}`).toPromise();
+  public getPositionsByOwner(owner: string, page: number, pageSize: number): Promise<Array<Position>> {
+    return this.httpClient.get<Array<Position>>(Paths.HEROKU_API_PATH +
+      `/positions/username/${owner}?page=${page}&pageSize=${pageSize}`).toPromise();
+  }
+
+  public getSoldPositionsByOwner(owner: string, page: number, pageSize: number): Promise<Array<Position>> {
+    return this.httpClient.get<Array<Position>>(Paths.HEROKU_API_PATH +
+      `/positions/username/${owner}?page=${page}&pageSize=${pageSize}&sold=true`).toPromise();
   }
 }
 
