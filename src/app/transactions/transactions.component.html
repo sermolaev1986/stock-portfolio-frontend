@@ -3,19 +3,19 @@
   <ng-template pTemplate="header">
     <tr>
       <th>Datum</th>
-      <th>Typ</th>
       <th>Stück</th>
       <th>Preis</th>
       <th>Wert</th>
+      <th>Typ</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-transaction>
     <tr>
       <td>{{transaction.date | date}}</td>
-      <td>{{getOperationType(transaction.operator)}}</td>
       <td>{{transaction.argument}}</td>
       <td>{{transaction.price | currency: 'EUR'}}</td>
       <td>{{transaction.price * transaction.argument | currency: 'EUR'}}</td>
+      <td>{{getOperationType(transaction.operator)}}</td>
     </tr>
   </ng-template>
 
