@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Portfolio, Position} from "../model/portfolio";
 import {StockSymbolService} from "../service/stock-symbol.service";
 import {StockQuoteService} from "../service/stock-quote.service";
+import {ChartData} from "./data";
 
 @Component({
   selector: 'app-portfolio',
@@ -16,19 +17,12 @@ export class PortfolioComponent implements OnChanges {
   @Input("owner")
   owner: string | undefined;
 
+  public originalData: Array<ChartData> = [];
   public chartData: any = [];
   public totalProfit = 0;
   public currentPortfolioValue = 0;
 
-  basicOptions = {
-    plugins: {
-      legend: {
-        display: false
-      },
-      responsive: true
-    }
-  };
-  someStyle = {'background': 'red'}
+  public checked = false;
 
   constructor(private readonly stockSymbolService: StockSymbolService,
               private readonly stockQuoteService: StockQuoteService) {
@@ -44,31 +38,14 @@ export class PortfolioComponent implements OnChanges {
         if (this.portfolio) {
           this.currentPortfolioValue = this.getCurrentPortfolioValue(this.portfolio.positions, quotesMap);
           this.totalProfit = this.currentPortfolioValue - this.portfolio.investments;
-          this.chartData = this.getData(quotesMap, this.portfolio.positions);
+          this.originalData = this.getData(quotesMap, this.portfolio.positions).sort((a, b) => a.price - b.price);
+          this.chartData = this.getPieChartData(this.originalData);
         }
       });
     }
   }
 
-  private getCurrentPortfolioValue(positions: Position[], quotesMap: Map<string, number>): number {
-    return positions
-      .map(position => {
-        return PortfolioComponent.getValue(quotesMap, position.symbol) * position.stockCount;
-      })
-      .reduce((a, b) => a + b);
-  }
-
-  private getData(quotesMap: Map<string, number>, positions: Position[]) {
-    let data: Array<any> = [];
-    positions.forEach(position => {
-      data.push({
-        name: position.name,
-        price: PortfolioComponent.getValue(quotesMap, position.symbol) * position.stockCount
-      });
-    });
-
-    console.log(data);
-
+  private getPieChartData(data: Array<ChartData>) {
     return {
       labels: data.map(item => item.name),
       datasets: [
@@ -109,6 +86,27 @@ export class PortfolioComponent implements OnChanges {
         }
       ]
     };
+  }
+
+  private getCurrentPortfolioValue(positions: Position[], quotesMap: Map<string, number>): number {
+    return positions
+      .map(position => {
+        return PortfolioComponent.getValue(quotesMap, position.symbol) * position.stockCount;
+      })
+      .reduce((a, b) => a + b);
+  }
+
+  private getData(quotesMap: Map<string, number>, positions: Position[]): Array<ChartData> {
+    let data: Array<ChartData> = [];
+    positions.forEach(position => {
+      data.push({
+        name: position.name,
+        type: position.type,
+        price: PortfolioComponent.getValue(quotesMap, position.symbol) * position.stockCount
+      });
+    });
+
+    return data;
   }
 
   private static getValue(map: Map<string, number>, key: string): number {

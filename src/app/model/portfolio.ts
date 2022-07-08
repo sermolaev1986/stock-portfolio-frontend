@@ -2,6 +2,7 @@ export type Position = {
   symbol: string,
   usSymbol: string,
   name: string,
+  type: string,
   stockCount: number,
   investments: number,
   buyDate: string,

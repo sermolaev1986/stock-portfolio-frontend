@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {PortfolioService} from "../service/portfolio.service";
-import {Portfolio} from "../model/portfolio";
+import {Portfolio, Position} from "../model/portfolio";
 
 @Component({
   selector: 'app-dashboard',
@@ -9,6 +9,7 @@ import {Portfolio} from "../model/portfolio";
 })
 export class DashboardComponent implements OnInit {
 
+  overallPortfolio: Portfolio | undefined;
   andreiPortfolio: Portfolio | undefined;
   sergeiPortfolio: Portfolio | undefined;
   olgaPortfolio: Portfolio | undefined;
@@ -24,7 +25,36 @@ export class DashboardComponent implements OnInit {
       this.sergeiPortfolio = portfolio["Sergei"];
       // @ts-ignore
       this.olgaPortfolio = portfolio["Olga"];
+
+      const map = new Map<string, Position>();
+      this.andreiPortfolio.positions.forEach(item => this.mergePosition(map, item));
+      this.sergeiPortfolio.positions.forEach(item => this.mergePosition(map, item));
+      this.olgaPortfolio.positions.forEach(item => this.mergePosition(map, item));
+
+      this.overallPortfolio = {
+        investments: this.andreiPortfolio.investments + this.sergeiPortfolio.investments + this.olgaPortfolio.investments,
+        positions: Array.from(map.values())
+      }
     })
+  }
+
+  private mergePosition(map: Map<string, Position>, item: Position) {
+    let position = map.get(item.symbol)
+    if (position) {
+      map.set(item.symbol, {
+        symbol: item.symbol,
+        usSymbol: item.usSymbol,
+        name: item.name,
+        type: item.type,
+        stockCount: item.stockCount + position.stockCount,
+        investments: item.investments + position.investments,
+        dividends: item.dividends + position.dividends,
+        owner: 'Overall',
+        buyDate: null
+      });
+    } else {
+      map.set(item.symbol, item)
+    }
   }
 
 }

@@ -1,17 +1,25 @@
 <div class="card">
-  <h2>
+  <h2 class="header-container">
     <a routerLink="/portfolio-details" [queryParams]="{owner: owner}">{{owner}}</a>
+    <a routerLink="/diagram-details" [state]="{originalData: originalData}">
+      <i class="pi pi-window-maximize"></i>
+    </a>
   </h2>
-  <p-chart type="doughnut" [data]="chartData" [options]="basicOptions"></p-chart>
+
+  <app-diagram [chartData]="chartData" chartType="doughnut" [displayDataLabels]="false"></app-diagram>
+
   <p-card class="my-card">
     <div class="statistics-container">
       <div class="portfolio-value-container">
         <p-card [style]="{'background': '#ffa726'}">{{currentPortfolioValue | currency: 'EUR'}}</p-card>
       </div>
       <div class="profit-investments-container">
-        <div class="container-with-padding margin-bottom card-green">{{totalProfit | currency: 'EUR'}}</div>
+        <div class="container-with-padding margin-bottom"
+             [ngClass]="totalProfit > 0? 'card-green' : 'card-red'">{{totalProfit | currency: 'EUR'}}</div>
         <div class="container-with-padding card-blue">{{portfolio?.investments | currency: 'EUR'}}</div>
       </div>
     </div>
   </p-card>
+
+
 </div>

@@ -13,9 +13,8 @@ import {RouterModule, Routes} from "@angular/router";
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {PortfolioDetailsComponent} from './portfolio-details/portfolio-details.component';
 import {TransactionWizardComponent} from './transaction-wizard/transaction-wizard.component';
-import {DropdownModule} from 'primeng/dropdown';
 import {DividendListComponent} from './dividend-list/dividend-list.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {CalendarModule} from 'primeng/calendar';
 import {AutoCompleteModule} from 'primeng/autocomplete';
@@ -25,12 +24,17 @@ import {ToastModule} from 'primeng/toast';
 import {PortfolioComponent} from "./portfolio/portfolio.component";
 import { SoldPositionsComponent } from './sold-positions/sold-positions.component';
 import { TransactionsComponent } from './transactions/transactions.component';
+import {CheckboxModule} from "primeng/checkbox";
+import { DiagramDetailsComponent } from './diagram-details/diagram-details.component';
+import {DropdownModule} from 'primeng/dropdown';
+import { DiagramComponent } from './diagram/diagram.component';
 
 registerLocaleData(localeAustria, 'de-AT');
 
 const routes: Routes = [
   {path: '', component: DashboardComponent},
   {path: 'portfolio-details', component: PortfolioDetailsComponent},
+  {path: 'diagram-details', component: DiagramDetailsComponent},
   {path: 'dividend-list', component: DividendListComponent},
   {path: 'transactions', component: TransactionsComponent},
   {path: 'transaction-wizard', component: TransactionWizardComponent}
@@ -45,7 +49,9 @@ const routes: Routes = [
     DividendListComponent,
     PortfolioComponent,
     SoldPositionsComponent,
-    TransactionsComponent
+    TransactionsComponent,
+    DiagramDetailsComponent,
+    DiagramComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +68,9 @@ const routes: Routes = [
     AutoCompleteModule,
     InputNumberModule,
     SelectButtonModule,
-    ToastModule
+    ToastModule,
+    CheckboxModule,
+    FormsModule
   ],
   providers: [{
     provide: LOCALE_ID,

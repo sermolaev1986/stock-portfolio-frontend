@@ -2,6 +2,11 @@
   text-align: center;
 }
 
+.header-container {
+  display: flex;
+  justify-content: space-between;
+}
+
 .profit-investments-container {
   display: flex;
   flex-direction: column;
@@ -23,6 +28,10 @@
 
 .card-green {
   background: #66bb6a;
+}
+
+.card-red {
+  background: red;
 }
 
 .card-blue {
