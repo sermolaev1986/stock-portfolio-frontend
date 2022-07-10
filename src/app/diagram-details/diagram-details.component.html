@@ -1,0 +1,30 @@
+<div class="diagram-container">
+  <app-diagram [chartData]="chartData" [chartType]="chartType" [displayDataLabels]="displayDataLabels"></app-diagram>
+  <div class="asset-type-filter-container">
+    <div class="field-checkbox">
+      <p-checkbox value="reit" [(ngModel)]="selectedTypes" inputId="reit" (onChange)="refreshPieChart()"></p-checkbox>
+      <label for="reit">REIT</label>
+    </div>
+
+    <div class="field-checkbox">
+      <p-checkbox value="stock" [(ngModel)]="selectedTypes" inputId="stock"
+                  (onChange)="refreshPieChart()"></p-checkbox>
+      <label for="stock">Stocks</label>
+    </div>
+
+    <div class="field-checkbox">
+      <p-checkbox value="bond" [(ngModel)]="selectedTypes" inputId="bond" (onChange)="refreshPieChart()"></p-checkbox>
+      <label for="bond">Bonds</label>
+    </div>
+
+    <div class="field-checkbox">
+      <p-checkbox [(ngModel)]="displayGroupedByType" inputId="displayGroupedByType" [binary]="true"
+                  (onChange)="toggleDisplayGroupedByType()"></p-checkbox>
+      <label for="displayGroupedByType">Group by type</label>
+    </div>
+
+    <p-dropdown [options]="chartTypes" [(ngModel)]="chartType" optionLabel="name" optionValue="code" (onChange)="refreshPieChart()"></p-dropdown>
+  </div>
+</div>
+
+

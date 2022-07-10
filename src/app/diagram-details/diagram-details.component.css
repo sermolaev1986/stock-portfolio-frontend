@@ -1,0 +1,14 @@
+.diagram-container {
+  padding: 50px;
+}
+
+.diagram-container {
+  width: 1200px;
+}
+
+.asset-type-filter-container {
+  position: absolute;
+  top:200px;
+  right: 200px;
+}
+
