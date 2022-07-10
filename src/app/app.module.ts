@@ -28,6 +28,7 @@ import {CheckboxModule} from "primeng/checkbox";
 import { DiagramDetailsComponent } from './diagram-details/diagram-details.component';
 import {DropdownModule} from 'primeng/dropdown';
 import { DiagramComponent } from './diagram/diagram.component';
+import {ProgressSpinnerModule} from "primeng/progressspinner";
 
 registerLocaleData(localeAustria, 'de-AT');
 
@@ -37,7 +38,8 @@ const routes: Routes = [
   {path: 'diagram-details', component: DiagramDetailsComponent},
   {path: 'dividend-list', component: DividendListComponent},
   {path: 'transactions', component: TransactionsComponent},
-  {path: 'transaction-wizard', component: TransactionWizardComponent}
+  {path: 'transaction-wizard', component: TransactionWizardComponent},
+  {path: 'sold-positions', component: SoldPositionsComponent}
 ];
 
 @NgModule({
@@ -70,7 +72,8 @@ const routes: Routes = [
     SelectButtonModule,
     ToastModule,
     CheckboxModule,
-    FormsModule
+    FormsModule,
+    ProgressSpinnerModule
   ],
   providers: [{
     provide: LOCALE_ID,

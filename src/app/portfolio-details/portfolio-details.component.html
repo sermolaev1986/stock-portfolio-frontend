@@ -1,27 +1,31 @@
-<p-table [value]="positions" [paginator]="true" [lazy]="true" (onLazyLoad)="onPageChanged($event)" [rows]="pageSize" [totalRecords]="200" styleClass="p-datatable-striped" [responsive]="true"
+<p-table [value]="positions" [paginator]="true" [lazy]="true" (onLazyLoad)="onPageChanged($event)" [rows]="pageSize"
+         [totalRecords]="totalPositions" styleClass="p-datatable-striped" [responsive]="true" [loading]="loading"
          responsiveLayout="scroll">
   <ng-template pTemplate="header">
     <tr>
-      <th>Name</th>
-      <th>Stk</th>
-      <th>Einstandswert</th>
-      <th>Marktwert</th>
+      <th pSortableColumn="name">Name
+        <p-sortIcon field="name"></p-sortIcon>
+      </th>
       <th>Gewinn</th>
+      <th>Marktwert</th>
+      <th>Einstandswert</th>
+      <th>Stk</th>
       <th>Dividende</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-position>
     <tr>
       <td><img src="{{logoMap.get(position.usSymbol)}}" class="my-logo">{{position.name}}</td>
+      <td>
+        <p-badge [value]="this.getStringValue(position.profit | percent)"
+                 [severity]="position.profit > 0? 'success':'warning'"></p-badge>
+      </td>
+      <td>{{position.currentValue | currency: 'EUR'}}</td>
+      <td>
+        <a routerLink="/transactions"
+           [queryParams]="{owner: owner, symbol: position.symbol}">{{position.buyValue | currency:'EUR'}}</a>
+      </td>
       <td>{{position.stockCount}}</td>
-      <td>
-        <a routerLink="/transactions" [queryParams]="{owner: owner, symbol: position.symbol}">{{position.buyValue | currency:'EUR'}}</a>
-      </td>
-      <td>{{position.currentValue | currency: 'EUR'}}
-      </td>
-      <td>
-      <p-badge [value]="this.getStringValue(position.profit | percent)" [severity]="position.profit > 0? 'success':'warning'"></p-badge>
-      </td>
       <td>
         <a *ngIf="position.dividendsTotalAmountPaid > 0" routerLink="/dividend-list"
            [queryParams]="{owner: owner, symbol: position.symbol, usSymbol: position.usSymbol}">{{position.dividendsTotalAmountPaid | currency: 'EUR'}}</a>
@@ -32,3 +36,6 @@
   </ng-template>
 
 </p-table>
+
+<a *ngIf="isSomePositionsSold" routerLink="/sold-positions" [queryParams]="{owner: owner}">See sold positions</a>
+

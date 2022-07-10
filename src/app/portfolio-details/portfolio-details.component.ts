@@ -19,6 +19,12 @@ export class PortfolioDetailsComponent implements OnInit {
   public positions: Array<PortfolioPosition> = [];
 
   public pageSize = 6;
+  public totalPositions = 0;
+
+  private currentPage = 0;
+  private sortDirection = 'ASC';
+  public isSomePositionsSold = false;
+  public loading = true;
 
   constructor(private readonly portfolioService: PortfolioService,
               private readonly stockQuoteService: StockQuoteService,
@@ -30,21 +36,27 @@ export class PortfolioDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.owner = params['owner'];
-      this.loadPositionsForPage(0, this.pageSize);
+      this.totalPositions = params['totalPositions'];
+      this.loadPositionsForPage(this.pageSize);
     });
   }
 
   public onPageChanged(event: LazyLoadEvent) {
+    this.loading = true;
     if (event.first != undefined && event.rows != undefined) {
       //event.first = First row offset
       //event.rows = Number of rows per page
       const currentPage = event.first / event.rows + 1;
-      this.loadPositionsForPage(currentPage - 1, event.rows);
+      this.currentPage = currentPage - 1;
+
+      this.sortDirection = event.sortOrder > 0? 'ASC': 'DESC';
+      this.loadPositionsForPage(this.pageSize);
     }
   }
 
-  private loadPositionsForPage(page: number, pageSize: number): void {
-    this.portfolioService.getPositionsByOwner(this.owner, page, pageSize).then(ownerPositions => {
+  private loadPositionsForPage(pageSize: number): void {
+    this.portfolioService.getPositionsByOwner(this.owner, this.currentPage, pageSize, 'stock.name', this.sortDirection).then(ownerPositions => {
+      this.isSomePositionsSold = ownerPositions.filter(position => position.stockCount == 0).length > 0;
       let currentPositions = ownerPositions.filter(position => position.stockCount !== 0);
       let symbols = [...new Set(currentPositions.map(position => position.symbol))];
       let usSymbols = [...new Set(currentPositions.map(position => position.usSymbol))];
@@ -73,6 +85,8 @@ export class PortfolioDetailsComponent implements OnInit {
             profit: (currentValue - position.investments) / position.investments
           }
         });
+
+        this.loading = false;
 
       });
     })

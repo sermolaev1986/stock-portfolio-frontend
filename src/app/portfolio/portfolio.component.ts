@@ -17,10 +17,10 @@ export class PortfolioComponent implements OnChanges {
   @Input("owner")
   owner: string | undefined;
 
-  public originalData: Array<ChartData> = [];
-  public chartData: any = [];
+  public originalData: Array<ChartData>;
+  public chartData: any;
   public totalProfit = 0;
-  public currentPortfolioValue = 0;
+  public currentPortfolioValue;
 
   public checked = false;
 
@@ -38,7 +38,7 @@ export class PortfolioComponent implements OnChanges {
         if (this.portfolio) {
           this.currentPortfolioValue = this.getCurrentPortfolioValue(this.portfolio.positions, quotesMap);
           this.totalProfit = this.currentPortfolioValue - this.portfolio.investments;
-          this.originalData = this.getData(quotesMap, this.portfolio.positions).sort((a, b) => a.price - b.price);
+          this.originalData = this.getData(quotesMap, this.portfolio.positions.filter(value => value.stockCount !== 0)).sort((a, b) => a.price - b.price);
           this.chartData = this.getPieChartData(this.originalData);
         }
       });

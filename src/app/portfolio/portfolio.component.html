@@ -1,15 +1,18 @@
 <div class="card">
   <h2 class="header-container">
-    <a routerLink="/portfolio-details" [queryParams]="{owner: owner}">{{owner}}</a>
-    <a routerLink="/diagram-details" [state]="{originalData: originalData}">
+    <a routerLink="/portfolio-details" [queryParams]="{owner: owner, totalPositions: portfolio.positions.length}">{{owner}}</a>
+    <a *ngIf="originalData" routerLink="/diagram-details" [state]="{originalData: originalData}">
       <i class="pi pi-window-maximize"></i>
     </a>
   </h2>
 
+  <p-progressSpinner *ngIf="!chartData"></p-progressSpinner>
+
   <app-diagram [chartData]="chartData" chartType="doughnut" [displayDataLabels]="false"></app-diagram>
 
   <p-card class="my-card">
-    <div class="statistics-container">
+    <p-progressSpinner *ngIf="!currentPortfolioValue"></p-progressSpinner>
+    <div *ngIf="currentPortfolioValue" class="statistics-container">
       <div class="portfolio-value-container">
         <p-card [style]="{'background': '#ffa726'}">{{currentPortfolioValue | currency: 'EUR'}}</p-card>
       </div>
