@@ -17,14 +17,15 @@
       <label for="bond">Bonds</label>
     </div>
 
-    <div class="field-checkbox">
-      <p-checkbox [(ngModel)]="displayGroupedByType" inputId="displayGroupedByType" [binary]="true"
-                  (onChange)="toggleDisplayGroupedByType()"></p-checkbox>
-      <label for="displayGroupedByType">Group by type</label>
-    </div>
-
-    <p-dropdown [options]="chartTypes" [(ngModel)]="chartType" optionLabel="name" optionValue="code" (onChange)="refreshPieChart()"></p-dropdown>
   </div>
+
+  <div class="groupByTypeContainer">
+    <p-inputSwitch [(ngModel)]="displayGroupedByType" inputId="displayGroupedByType"
+                   (onChange)="toggleDisplayGroupedByType()"></p-inputSwitch>
+    <label for="displayGroupedByType" class="groupByTypeLabel">Group by type</label>
+  </div>
+
+  <p-dropdown [options]="chartTypes" [(ngModel)]="chartType" optionLabel="name" optionValue="code" (onChange)="refreshPieChart()"></p-dropdown>
 </div>
 
 

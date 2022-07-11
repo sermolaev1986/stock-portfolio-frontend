@@ -13,7 +13,7 @@ export class DiagramDetailsComponent implements OnInit {
 
   public selectedTypes: string[] = ['stock', 'bond', 'reit'];
 
-  public chartType = 'pie';
+  public chartType = 'doughnut';
   public chartTypes = [
     {name: 'Pie', code: 'pie'},
     {name: 'Doughnut', code: 'doughnut'},

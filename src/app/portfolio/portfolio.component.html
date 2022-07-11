@@ -1,6 +1,7 @@
 <div class="card">
   <h2 class="header-container">
-    <a routerLink="/portfolio-details" [queryParams]="{owner: owner, totalPositions: portfolio.positions.length}">{{owner}}</a>
+    <span *ngIf="!showPortfolioDetailsLink">{{owner}}</span>
+    <a *ngIf="showPortfolioDetailsLink" routerLink="/portfolio-details" [queryParams]="{owner: owner, totalPositions: portfolio.positions.length}">{{owner}}</a>
     <a *ngIf="originalData" routerLink="/diagram-details" [state]="{originalData: originalData}">
       <i class="pi pi-window-maximize"></i>
     </a>

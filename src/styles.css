@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+@keyframes p-progress-spinner-color {
+  100%,
+  0% {
+    stroke: #bbff00;
+  }
+  40% {
+    stroke: #ff0088;
+  }
+  66% {
+    stroke: #019fad;
+  }
+  80%,
+  90% {
+    stroke: #ff8800;
+  }
+}

@@ -55,9 +55,7 @@ export class PortfolioDetailsComponent implements OnInit {
   }
 
   private loadPositionsForPage(pageSize: number): void {
-    this.portfolioService.getPositionsByOwner(this.owner, this.currentPage, pageSize, 'stock.name', this.sortDirection).then(ownerPositions => {
-      this.isSomePositionsSold = ownerPositions.filter(position => position.stockCount == 0).length > 0;
-      let currentPositions = ownerPositions.filter(position => position.stockCount !== 0);
+    this.portfolioService.getPositionsByOwner(this.owner, this.currentPage, pageSize, 'stock.name', this.sortDirection).then(currentPositions => {
       let symbols = [...new Set(currentPositions.map(position => position.symbol))];
       let usSymbols = [...new Set(currentPositions.map(position => position.usSymbol))];
 
@@ -82,7 +80,7 @@ export class PortfolioDetailsComponent implements OnInit {
             buyValue: position.investments,
             buyDate: position.buyDate,
             dividendsTotalAmountPaid: position.dividends,
-            profit: (currentValue - position.investments) / position.investments
+            profit: position.stockCount > 0? (currentValue - position.investments) / position.investments : position.investments * -0.725
           }
         });
 

@@ -56,7 +56,7 @@ export class SoldPositionsComponent implements OnInit {
             buyValue: position.investments,
             buyDate: position.buyDate,
             dividendsTotalAmountPaid: position.dividends,
-            profit: position.investments * -1
+            profit: position.investments * -0.725
           }
         });
 

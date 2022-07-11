@@ -29,6 +29,7 @@ import { DiagramDetailsComponent } from './diagram-details/diagram-details.compo
 import {DropdownModule} from 'primeng/dropdown';
 import { DiagramComponent } from './diagram/diagram.component';
 import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {InputSwitchModule} from "primeng/inputswitch";
 
 registerLocaleData(localeAustria, 'de-AT');
 
@@ -73,7 +74,8 @@ const routes: Routes = [
     ToastModule,
     CheckboxModule,
     FormsModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    InputSwitchModule
   ],
   providers: [{
     provide: LOCALE_ID,

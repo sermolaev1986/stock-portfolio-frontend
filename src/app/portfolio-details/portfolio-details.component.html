@@ -17,13 +17,16 @@
     <tr>
       <td><img src="{{logoMap.get(position.usSymbol)}}" class="my-logo">{{position.name}}</td>
       <td>
-        <p-badge [value]="this.getStringValue(position.profit | percent)"
+        <p-badge [value]="position.stockCount> 0? this.getStringValue(position.profit | percent) : this.getStringValue(position.profit | currency: 'EUR')"
                  [severity]="position.profit > 0? 'success':'warning'"></p-badge>
       </td>
-      <td>{{position.currentValue | currency: 'EUR'}}</td>
+      <td *ngIf="position.stockCount > 0">{{position.currentValue | currency: 'EUR'}}</td>
+      <td *ngIf="position.stockCount == 0">
+        <a routerLink="/sold-positions" [queryParams]="{owner: owner}">See sold positions</a>
+      </td>
       <td>
         <a routerLink="/transactions"
-           [queryParams]="{owner: owner, symbol: position.symbol}">{{position.buyValue | currency:'EUR'}}</a>
+           [queryParams]="{owner: owner, symbol: position.symbol}">{{position.stockCount > 0? (position.buyValue | currency:'EUR') : 'See transactions'}}</a>
       </td>
       <td>{{position.stockCount}}</td>
       <td>
@@ -37,5 +40,5 @@
 
 </p-table>
 
-<a *ngIf="isSomePositionsSold" routerLink="/sold-positions" [queryParams]="{owner: owner}">See sold positions</a>
+
 
