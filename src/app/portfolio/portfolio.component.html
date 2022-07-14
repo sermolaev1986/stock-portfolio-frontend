@@ -1,8 +1,8 @@
 <div class="card">
   <h2 class="header-container">
     <span *ngIf="!showPortfolioDetailsLink">{{owner}}</span>
-    <a *ngIf="showPortfolioDetailsLink" routerLink="/portfolio-details" [queryParams]="{owner: owner, totalPositions: portfolio.positions.length}">{{owner}}</a>
-    <a *ngIf="originalData" routerLink="/diagram-details" [state]="{originalData: originalData}">
+    <a *ngIf="showPortfolioDetailsLink" routerLink="/portfolio-details" [queryParams]="{owner: owner}">{{owner}}</a>
+    <a *ngIf="originalData" routerLink="/diagram-details" [state]="{originalData: originalData}" class="diagram-details-link">
       <i class="pi pi-window-maximize"></i>
     </a>
   </h2>

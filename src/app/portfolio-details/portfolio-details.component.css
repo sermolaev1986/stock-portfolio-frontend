@@ -13,3 +13,8 @@
   width: 32px;
   margin-right: 5px;
 }
+
+.table-caption-container {
+  display: flex;
+  justify-content: space-between;
+}

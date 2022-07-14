@@ -46,7 +46,7 @@ export class DiagramComponent implements OnInit {
               name = name + '%';
             }
 
-            if (percentage > 3) {
+            if (percentage > 3 && label.length <=20) {
               name = label + ' ' + name;
             }
 

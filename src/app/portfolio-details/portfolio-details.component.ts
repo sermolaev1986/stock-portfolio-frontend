@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {PortfolioService} from "../service/portfolio.service";
 import {StockQuoteService} from "../service/stock-quote.service";
 import {ActivatedRoute} from "@angular/router";
-import {PortfolioPosition} from "../model/portfolio";
+import {PortfolioPosition, PositionsResponse} from "../model/portfolio";
 import {StockSymbolService} from "../service/stock-symbol.service";
 import {StockLookupService} from "../service/stock-lookup.service";
 import {LazyLoadEvent} from "primeng/api";
@@ -36,8 +36,7 @@ export class PortfolioDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.owner = params['owner'];
-      this.totalPositions = params['totalPositions'];
-      this.loadPositionsForPage(this.pageSize);
+      this.loadPositionsForPage();
     });
   }
 
@@ -49,45 +48,63 @@ export class PortfolioDetailsComponent implements OnInit {
       const currentPage = event.first / event.rows + 1;
       this.currentPage = currentPage - 1;
 
-      this.sortDirection = event.sortOrder > 0? 'ASC': 'DESC';
-      this.loadPositionsForPage(this.pageSize);
+      this.sortDirection = event.sortOrder > 0 ? 'ASC' : 'DESC';
+      this.loadPositionsForPage();
     }
   }
 
-  private loadPositionsForPage(pageSize: number): void {
-    this.portfolioService.getPositionsByOwner(this.owner, this.currentPage, pageSize, 'stock.name', this.sortDirection).then(currentPositions => {
-      let symbols = [...new Set(currentPositions.map(position => position.symbol))];
-      let usSymbols = [...new Set(currentPositions.map(position => position.usSymbol))];
+  public onSearchByName(event: Event): void {
+    let value = (event.target as HTMLInputElement).value;
+    if (value.length >= 3) {
+      this.portfolioService.getPositionsByOwner(this.owner, this.currentPage, this.pageSize, 'stock.name', this.sortDirection, value).then(positionsResponse => {
+        this.renderPositions(positionsResponse);
+      });
+    } else if (value.length === 0) {
+      this.loadPositionsForPage();
+    }
 
-      usSymbols.forEach(symbol => {
-        this.stockLookupService.getCompanyProfile(symbol).then(companyProfile => {
-          this.logoMap.set(symbol, companyProfile.logo);
-        });
+  }
+
+  private loadPositionsForPage(): void {
+    this.portfolioService.getPositionsByOwner(this.owner, this.currentPage, this.pageSize, 'stock.name', this.sortDirection).then(positionsResponse => {
+      this.renderPositions(positionsResponse);
+    });
+  }
+
+  private renderPositions(positionsResponse: PositionsResponse) {
+    this.totalPositions = positionsResponse.totalPositions;
+    let currentPositions = positionsResponse.positions;
+    let symbols = [...new Set(currentPositions.map(position => position.symbol))];
+    let usSymbols = [...new Set(currentPositions.map(position => position.usSymbol))];
+
+    usSymbols.forEach(symbol => {
+      this.stockLookupService.getCompanyProfile(symbol).then(companyProfile => {
+        this.logoMap.set(symbol, companyProfile.logo);
+      });
+    });
+
+    this.stockQuoteService.getQuotes(symbols).then(quotes => {
+      let quotesMap: Map<string, number> = new Map(quotes.map(quote => [quote.symbol, quote.price]));
+
+      this.positions = currentPositions.map(position => {
+        let currentValue = this.getValue(quotesMap, position.symbol) * position.stockCount;
+
+        return {
+          symbol: position.symbol,
+          usSymbol: position.usSymbol,
+          name: position.name,
+          stockCount: position.stockCount,
+          currentValue: currentValue,
+          buyValue: position.investments,
+          buyDate: position.buyDate,
+          dividendsTotalAmountPaid: position.dividends,
+          profit: position.stockCount > 0 ? (currentValue - position.investments) / position.investments : position.investments * -0.725
+        }
       });
 
-      this.stockQuoteService.getQuotes(symbols).then(quotes => {
-        let quotesMap: Map<string, number> = new Map(quotes.map(quote => [quote.symbol, quote.price]));
+      this.loading = false;
 
-        this.positions = currentPositions.map(position => {
-          let currentValue = this.getValue(quotesMap, position.symbol) * position.stockCount;
-
-          return {
-            symbol: position.symbol,
-            usSymbol: position.usSymbol,
-            name: position.name,
-            stockCount: position.stockCount,
-            currentValue: currentValue,
-            buyValue: position.investments,
-            buyDate: position.buyDate,
-            dividendsTotalAmountPaid: position.dividends,
-            profit: position.stockCount > 0? (currentValue - position.investments) / position.investments : position.investments * -0.725
-          }
-        });
-
-        this.loading = false;
-
-      });
-    })
+    });
   }
 
   private getValue(map: Map<string, number>, key: string): number {

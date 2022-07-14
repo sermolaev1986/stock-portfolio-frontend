@@ -1,3 +1,8 @@
+export type PositionsResponse = {
+  totalPositions: number,
+  positions: Array<Position>
+}
+
 export type Position = {
   symbol: string,
   usSymbol: string,

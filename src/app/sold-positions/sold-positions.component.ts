@@ -44,8 +44,8 @@ export class SoldPositionsComponent implements OnInit {
   }
 
   private loadPositionsForPage(page: number, pageSize: number): void {
-    this.portfolioService.getSoldPositionsByOwner(this.owner, page, pageSize).then(soldPositions => {
-      this.soldPositions = soldPositions
+    this.portfolioService.getSoldPositionsByOwner(this.owner, page, pageSize).then(positionsResponse => {
+      this.soldPositions = positionsResponse.positions
         .map(position => {
           return {
             symbol: position.symbol,
