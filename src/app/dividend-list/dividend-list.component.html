@@ -1,30 +1,31 @@
 <img *ngIf="logo" src="{{logo}}" class="my-logo">
 <div>
-<h3 class="my-header">{{companyName}} dividende für {{owner}}</h3>
+  <h3 class="my-header">{{companyName}} Dividende für {{owner}}</h3>
 </div>
-<p-table *ngIf="dividends.length != 0" [value]="dividends" [paginator]="true" [rows]="6" [responsive]="true" responsiveLayout="scroll">
+<p-table *ngIf="dividends.length != 0" [value]="dividends" [paginator]="true" [rows]="6" [responsive]="true" [loading]="loading"
+         responsiveLayout="scroll">
   <ng-template pTemplate="header">
     <tr>
       <th>payment date</th>
-      <th>amount per share</th>
+      <th>euro netto amount</th>
+      <th>euro brutto amount</th>
       <th>split adjusted stock count</th>
       <th>dollar brutto amount</th>
-      <th>euro brutto amount</th>
-      <th>euro netto amount</th>
+      <th>amount per share</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-dividend>
     <tr [ngClass]="{'future-dividend-row' : isPaymentDateInFuture(dividend.paymentDate)}">
       <td>{{dividend.paymentDate | date}}</td>
-      <td>{{dividend.amountPerShare | currency: 'USD':'symbol':'1.2-4'}}</td>
+      <td>{{dividend.euroNettoAmount | currency: 'EUR'}}
+      </td>
+      <td>{{dividend.euroBruttoAmount | currency: 'EUR'}}
+      </td>
       <td>{{dividend.shareAmount}}
       </td>
       <td>{{dividend.dollarBruttoAmount | currency: 'USD':'symbol':'1.2-4'}}
       </td>
-      <td>{{dividend.euroBruttoAmount | currency: 'EUR'}}
-      </td>
-      <td>{{dividend.euroNettoAmount | currency: 'EUR'}}
-      </td>
+      <td>{{dividend.amountPerShare | currency: 'USD':'symbol':'1.2-4'}}</td>
     </tr>
   </ng-template>
 </p-table>

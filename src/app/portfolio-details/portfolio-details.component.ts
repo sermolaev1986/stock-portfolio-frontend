@@ -56,13 +56,16 @@ export class PortfolioDetailsComponent implements OnInit {
   public onSearchByName(event: Event): void {
     let value = (event.target as HTMLInputElement).value;
     if (value.length >= 3) {
+      this.currentPage = 0;
+      this.loading = true;
       this.portfolioService.getPositionsByOwner(this.owner, this.currentPage, this.pageSize, 'stock.name', this.sortDirection, value).then(positionsResponse => {
         this.renderPositions(positionsResponse);
       });
     } else if (value.length === 0) {
+      this.currentPage = 0;
+      this.loading = true;
       this.loadPositionsForPage();
     }
-
   }
 
   private loadPositionsForPage(): void {

@@ -16,6 +16,7 @@ export class DividendListComponent implements OnInit {
   public dividends: Array<HerokuDividend> = [];
   public companyName: string = "";
   public logo: string = "";
+  public loading = false;
 
   constructor(private readonly dividendService: HerokuDividendService,
               private readonly stockLookupService: StockLookupService,
@@ -24,6 +25,7 @@ export class DividendListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading = true;
     this.route.queryParams.subscribe(params => {
       this.owner = params['owner'];
       let symbol = params['symbol'];
@@ -31,6 +33,7 @@ export class DividendListComponent implements OnInit {
 
       this.dividendService.getDividends(this.owner, symbol).then(dividends => {
         this.dividends = dividends;
+        this.loading = false;
       });
 
       this.stockLookupService.getCompanyProfile(usSymbol).then(companyProfile => {
