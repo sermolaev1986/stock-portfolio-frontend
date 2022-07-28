@@ -6,7 +6,7 @@ import {ChartModule} from "primeng/chart";
 import {HttpClientModule} from "@angular/common/http";
 import {CardModule} from "primeng/card";
 import {BadgeModule} from "primeng/badge";
-import {PercentPipe, registerLocaleData} from "@angular/common";
+import {CurrencyPipe, PercentPipe, registerLocaleData} from "@angular/common";
 import localeAustria from '@angular/common/locales/de-AT';
 import {TableModule} from "primeng/table";
 import {RouterModule, Routes} from "@angular/router";
@@ -16,7 +16,6 @@ import {TransactionWizardComponent} from './transaction-wizard/transaction-wizar
 import {DividendListComponent} from './dividend-list/dividend-list.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {CalendarModule} from 'primeng/calendar';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {InputNumberModule} from "primeng/inputnumber";
 import {SelectButtonModule} from 'primeng/selectbutton';
@@ -30,6 +29,12 @@ import {DropdownModule} from 'primeng/dropdown';
 import { DiagramComponent } from './diagram/diagram.component';
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {InputSwitchModule} from "primeng/inputswitch";
+import { UpcomingDividendsComponent } from './upcoming-dividends/upcoming-dividends.component';
+import {FullCalendarModule} from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import {CalendarModule} from 'primeng/calendar';
 
 registerLocaleData(localeAustria, 'de-AT');
 
@@ -40,8 +45,15 @@ const routes: Routes = [
   {path: 'dividend-list', component: DividendListComponent},
   {path: 'transactions', component: TransactionsComponent},
   {path: 'transaction-wizard', component: TransactionWizardComponent},
-  {path: 'sold-positions', component: SoldPositionsComponent}
+  {path: 'sold-positions', component: SoldPositionsComponent},
+  {path: 'upcoming-dividends', component: UpcomingDividendsComponent}
 ];
+
+FullCalendarModule.registerPlugins([ // register FullCalendar plugins
+  dayGridPlugin,
+  timeGridPlugin,
+  interactionPlugin
+]);
 
 @NgModule({
   declarations: [
@@ -54,7 +66,8 @@ const routes: Routes = [
     SoldPositionsComponent,
     TransactionsComponent,
     DiagramDetailsComponent,
-    DiagramComponent
+    DiagramComponent,
+    UpcomingDividendsComponent
   ],
   imports: [
     BrowserModule,
@@ -75,12 +88,14 @@ const routes: Routes = [
     CheckboxModule,
     FormsModule,
     ProgressSpinnerModule,
-    InputSwitchModule
+    InputSwitchModule,
+    FullCalendarModule,
+    CalendarModule
   ],
   providers: [{
     provide: LOCALE_ID,
     useValue: 'de-AT'
-  }, PercentPipe],
+  }, PercentPipe, CurrencyPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule {
