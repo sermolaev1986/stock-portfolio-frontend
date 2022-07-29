@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UpcomingDividendsService} from "../service/upcoming-dividends.service";
 import {CurrencyPipe} from "@angular/common";
+import atLocale from '@fullcalendar/core/locales/de-at';
 
 @Component({
   selector: 'app-upcoming-dividends',
@@ -38,7 +39,9 @@ export class UpcomingDividendsComponent implements OnInit {
       selectable: true,
       selectMirror: true,
       dayMaxEvents: true,
-      displayEventTime: false
+      displayEventTime: false,
+      weekends: false,
+      locale: atLocale
     };
   }
 
