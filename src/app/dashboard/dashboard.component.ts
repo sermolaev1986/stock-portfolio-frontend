@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {PortfolioService} from "../service/portfolio.service";
 import {Portfolio, Position} from "../model/portfolio";
+import {DOCUMENT} from "@angular/common";
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +15,8 @@ export class DashboardComponent implements OnInit {
   sergeiPortfolio: Portfolio | undefined;
   olgaPortfolio: Portfolio | undefined;
 
-  constructor(private readonly portfolioService: PortfolioService) {
+  constructor(private readonly portfolioService: PortfolioService, @Inject(DOCUMENT) private document: Document) {
+
   }
 
   ngOnInit(): void {
@@ -57,4 +59,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  onSchemeChange() {
+    this.document.body.classList.toggle('bold-scheme');
+  }
 }

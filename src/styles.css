@@ -16,15 +16,10 @@
   }
 }
 
+body.bold-scheme, body.bold-scheme .p-component {
+  font-family: 'Prompt', sans-serif;
+}
 
-/*.my-body {*/
-/*  background: url("background.jpeg");*/
-/*  content: "";*/
-/*  top: 0;*/
-/*  left: 0;*/
-/*  bottom: 0;*/
-/*  right: 0;*/
-/*  position: absolute;*/
-/*  z-index: -1;*/
-/*  opacity: 0.5;*/
-/*}*/
+body.bold-scheme .header {
+  background: rgba(187,255,0,0.99)
+}

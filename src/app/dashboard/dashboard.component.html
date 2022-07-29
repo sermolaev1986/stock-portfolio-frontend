@@ -1,14 +1,29 @@
-<a class="pi pi-calendar calendar-icon" routerLink="/upcoming-dividends"></a>
+<a id="top"></a>
+<div class="header">
+  <div>
+    <a class="pi pi-calendar icon" routerLink="/upcoming-dividends"></a>
+  </div>
+  <div>
+    <a class="pi pi-plus-circle icon" routerLink="#"></a>
+  </div>
+  <div>
+    <a class="pi pi-palette icon" (click)="onSchemeChange()"></a>
+  </div>
+</div>
 <div class="top-level-container">
   <div class="my-diagrams-container">
-    <app-portfolio class="portfolio-container" [portfolio]="overallPortfolio" [owner]="'Overall'" [showPortfolioDetailsLink]="false"></app-portfolio>
+    <app-portfolio class="portfolio-container" [portfolio]="overallPortfolio" [owner]="'Overall'"
+                   [showPortfolioDetailsLink]="false"></app-portfolio>
     <app-portfolio class="portfolio-container" [portfolio]="andreiPortfolio" [owner]="'Andrei'"></app-portfolio>
     <app-portfolio class="portfolio-container" [portfolio]="olgaPortfolio" [owner]="'Olga'"></app-portfolio>
     <app-portfolio class="portfolio-container" [portfolio]="sergeiPortfolio" [owner]="'Sergei'"></app-portfolio>
   </div>
-  <div>
-    <a routerLink="/transaction-wizard">Add transaction</a>
-  </div>
 </div>
+
+<div class="header footer">
+  <a class="pi pi-angle-double-up icon" href="#top"></a>
+</div>
+
+
 
 
