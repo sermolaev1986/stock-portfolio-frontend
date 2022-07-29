@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: red;
+  background: lightblue;
 }
 
 @media screen and (min-width: 1000px){
@@ -14,8 +14,7 @@
 .icon {
   margin: 10px;
   font-size: 50px;
-  text-decoration: none;
-  color: #ff0088;
+  color: #EB6534FF;
 }
 
 .top-level-container {

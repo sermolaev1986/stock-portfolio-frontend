@@ -23,3 +23,11 @@ body.bold-scheme, body.bold-scheme .p-component {
 body.bold-scheme .header {
   background: rgba(187,255,0,0.99)
 }
+
+body.bold-scheme .icon {
+  color: #ff0088;
+}
+
+a {
+  text-decoration: none;
+}
