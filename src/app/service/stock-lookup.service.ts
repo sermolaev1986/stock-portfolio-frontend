@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {CompanyProfile, StockLookupResponse} from "../model/stock-lookup";
 import {tap} from "rxjs/operators";
 import {CacheService} from "./cache.service";
-import {ApiKeys} from "../constants/api-keys";
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class StockLookupService {
   }
 
   public lookupStockByName(name: string): Promise<StockLookupResponse> {
-    return this.http.get<StockLookupResponse>(`${this.basePath}/search?q=${name}&token=${ApiKeys.FINNHUB_API_KEY}`)
+    return this.http.get<StockLookupResponse>(`${this.basePath}/search?q=${name}&token=${environment.finnhubApiKey}`)
       .toPromise();
   }
 
@@ -30,7 +30,7 @@ export class StockLookupService {
     if (response == null) {
       console.log("Cache is empty, calling API");
       let headers = new HttpHeaders();
-      return this.http.get<CompanyProfile>(`${this.basePath}/stock/profile2?symbol=${symbol}&token=${ApiKeys.FINNHUB_API_KEY}`)
+      return this.http.get<CompanyProfile>(`${this.basePath}/stock/profile2?symbol=${symbol}&token=${environment.finnhubApiKey}`)
         .pipe(tap(response => this.cacheResponse(response, symbol)))
         .toPromise();
     } else {
