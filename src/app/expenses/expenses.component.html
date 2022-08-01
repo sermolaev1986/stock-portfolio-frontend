@@ -1,0 +1,17 @@
+<div class="monthContainer">
+  <div class="monthContainer">
+    <span class="p-inputgroup-addon icon" [ngStyle]="{'background-color':colorsPool[0].backgroundColor}"><i
+      class="pi pi-wallet"></i></span>
+    <p-calendar [(ngModel)]="month" (ngModelChange)="onMonthSelected()" view="month" dateFormat="mm/yy"
+                [readonlyInput]="true"></p-calendar>
+  </div>
+
+  <div class="monthContainer">
+    <span class="p-inputgroup-addon icon" [ngStyle]="{'background-color':colorsPool[1].backgroundColor}"><i
+      class="pi pi-wallet"></i></span>
+    <p-calendar [(ngModel)]="otherMonth" (ngModelChange)="onMonthSelected()" view="month" dateFormat="mm/yy"
+                [readonlyInput]="true"></p-calendar>
+  </div>
+</div>
+
+<app-diagram width="1200px" [chartData]="chartData" [chartType]="'bar'" [displayDataLabels]="true"></app-diagram>

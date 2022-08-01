@@ -35,6 +35,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import {CalendarModule} from 'primeng/calendar';
+import { ExpensesComponent } from './expenses/expenses.component';
 
 registerLocaleData(localeAustria, 'de-AT');
 
@@ -46,7 +47,8 @@ const routes: Routes = [
   {path: 'transactions', component: TransactionsComponent},
   {path: 'transaction-wizard', component: TransactionWizardComponent},
   {path: 'sold-positions', component: SoldPositionsComponent},
-  {path: 'upcoming-dividends', component: UpcomingDividendsComponent}
+  {path: 'upcoming-dividends', component: UpcomingDividendsComponent},
+  {path: 'expenses', component: ExpensesComponent}
 ];
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -67,7 +69,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     TransactionsComponent,
     DiagramDetailsComponent,
     DiagramComponent,
-    UpcomingDividendsComponent
+    UpcomingDividendsComponent,
+    ExpensesComponent
   ],
   imports: [
     BrowserModule,

@@ -9,6 +9,9 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 export class DiagramComponent implements OnInit {
 
   @Input()
+  width: string = "300px";
+
+  @Input()
   chartType: string;
 
   @Input()
@@ -59,7 +62,8 @@ export class DiagramComponent implements OnInit {
       legend: {
         display: false
       },
-      responsive: true
+      responsive: true,
+      maintainAspectRatio: false
     }
   };
 

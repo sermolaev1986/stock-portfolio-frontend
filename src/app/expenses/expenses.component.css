@@ -1,0 +1,8 @@
+.monthContainer {
+  display: flex;
+  justify-content: space-around;
+}
+
+.icon {
+  color: white;
+}
