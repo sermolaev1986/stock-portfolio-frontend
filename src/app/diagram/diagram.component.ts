@@ -20,6 +20,9 @@ export class DiagramComponent implements OnInit {
   @Input()
   public displayDataLabels = false;
 
+  @Input()
+  public showLabelsInPercents = true;
+
   public plugins = [ChartDataLabels];
   public options = {
     indexAxis: 'y',
@@ -27,37 +30,7 @@ export class DiagramComponent implements OnInit {
       datalabels: {
         enabled: true,
         display: true,
-        /* show value in percents */
-        formatter: (value, ctx) => {
-          if (!this.displayDataLabels) {
-            return '';
-          }
-
-          const label = ctx.chart.data.labels[ctx.dataIndex];
-
-          let sum = 0;
-          const dataArr = ctx.chart.data.datasets[0].data;
-          dataArr.map(data => {
-            sum += data;
-          });
-          const percentage = (value * 100 / sum);
-          if (percentage < 1.5) {
-            return '';
-          } else {
-            let name = percentage.toFixed(2);
-            if (percentage > 2) {
-              name = name + '%';
-            }
-
-            if (percentage > 3 && label.length <=20) {
-              name = label + ' ' + name;
-            }
-
-            return name;
-          }
-
-        },
-        color: '#fff',
+        color: '#fff'
       },
       legend: {
         display: false
@@ -71,6 +44,46 @@ export class DiagramComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (!this.displayDataLabels) {
+      // @ts-ignore
+      this.options.plugins.datalabels.formatter = this.formatNoOp;
+    } else {
+      if (this.showLabelsInPercents) {
+        /* show value in percents */
+        // @ts-ignore
+        this.options.plugins.datalabels.formatter = this.format;
+      }
+    }
+  }
+
+  formatNoOp(value, ctx): string {
+    return '';
+  }
+
+  format(value, ctx): string {
+    const label = ctx.chart.data.labels[ctx.dataIndex];
+
+    let sum = 0;
+    const dataArr = ctx.chart.data.datasets[0].data;
+    dataArr.map(data => {
+      sum += data;
+    });
+    const percentage = (value * 100 / sum);
+    if (percentage < 1.5) {
+      return '';
+    } else {
+      let name = percentage.toFixed(2);
+      if (percentage > 2) {
+        name = name + '%';
+      }
+
+      if (percentage > 3 && label.length <= 20) {
+        name = label + ' ' + name;
+      }
+
+      return name;
+    }
+
   }
 
 }
