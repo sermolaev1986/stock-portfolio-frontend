@@ -58,17 +58,26 @@ export class ExpensesComponent implements OnInit {
 
       const datasets = values.map((expenses, index) => {
         return {
-          data: expenses.map(expense => expense.value),
+          data: expenses.map(expense => Math.round(expense.value)),
+          borderColor: "white",
           backgroundColor: this.colorsPool[index].backgroundColor,
           hoverBackgroundColor: this.colorsPool[index].hoverColor,
-        };
-      })
+          barPercentage: 1,
+          categoryPercentage: 0.8,
+          borderWidth: 1
+        }
+      });
 
       datasets.push({
-        data: expensesMap["lastYearAverages"].map(expense => expense.value),
+        data: expensesMap["lastYearAverages"].map(expense => Math.round(expense.value)),
         backgroundColor: "#1E555C",
+        borderColor: "white",
         hoverBackgroundColor: "light-blue",
+        barPercentage: 1,
+        categoryPercentage: 0.8,
+        borderWidth: 1
       });
+
       this.chartData = {
         labels: values[0].map(value => value.category),
         datasets: datasets

@@ -26,69 +26,90 @@ export class DiagramComponent implements OnInit {
   @Input()
   public showLabelsInPercents = true;
 
+  @Input()
+  public showGrid = false;
+
   public plugins = [ChartDataLabels];
-  public options = {
-    indexAxis: 'y',
-    minBarLength: 100,
-    scales: {
+  public options: any;
+
+  constructor() {
+  }
+
+  ngOnInit(): void {
+    this.options = {
+      responsive: true,
+        legend: {
+      display: false
+    },
+      title: {
+        display: false
+      },
+      indexAxis: 'y',
+        minBarLength: 50,
+      // barValueSpacing: 1000000,
+      scales: {
       y: {
-        grid: {
-          display: false,
-          drawBorder: false
+        stacked: false,
+          grid: {
+          display: this.showGrid,
+            color: "#e3e3e3",
+            drawBorder: false,
+            drawOnChartArea: true,
+            drawTicks: this.showGrid
         },
         showTicks: false,
-        categoryPercentage: 1,
-        barPercentage: 1,
-        showTickMarks: false,
-        display: true,
-        scaleLabel: {
+          showTickMarks: false,
+          display: true,
+          scaleLabel: {
           show: false,
-          labelString: 'Value'
+            labelString: 'Value'
         },
         ticks: {
           // callback: function(value, index, ticks) {
           //   return index;
           // },
           mirror: false,
-          display: false,
-          beginAtZero: true,
-          max: 100,
-          min: 0,
+            display: this.showGrid,
+            beginAtZero: true,
+            max: 100,
+            min: -100,
+            suggestedMin: -100,
         }
       },
       x: {
-        grid: {
-          display: false,
-          drawBorder: false
+        stacked: false,
+          grid: {
+          color: "#e3e3e3",
+            display: this.showGrid,
+            drawBorder: true,
+            drawOnChartArea: true,
+            drawTicks: this.showGrid
         },
-        showTicks: false,
-        categoryPercentage: 0.9,
-        showTickMarks: false,
-        barPercentage: 0.9,
-        ticks: {
-          display: false,
-          beginAtZero: 0
+        showTicks: true,
+          showTickMarks: false,
+          ticks: {
+          display: this.showGrid,
+            beginAtZero: 0,
+            suggestedMin: -100,
+            min: -100,
+            stepSize: 50
         }
       }
     },
-    plugins: {
-      datalabels: {
-        enabled: true,
-        display: true,
-        color: '#fff'
-      },
-      legend: {
-        display: false
-      },
-      responsive: true,
-      maintainAspectRatio: false
-    }
-  };
+      plugins: {
+        datalabels: {
+          enabled: true,
+            display: true,
+            color: '#fff'
+        },
+        legend: {
+          display: false
+        },
+        responsive: true,
+          maintainAspectRatio: false
+      }
+    };
 
-  constructor() {
-  }
-
-  ngOnInit(): void {
     if (!this.displayDataLabels) {
       // @ts-ignore
       this.options.plugins.datalabels.formatter = this.formatNoOp;
@@ -111,14 +132,9 @@ export class DiagramComponent implements OnInit {
     // const dataArr = ctx.chart.data.datasets[0].data;
 
     if (value === 0) {
-      return "                —";
+      return "—";
     }
-
-    if (value < 100) {
-      return value;
-    } else {
-      return label + " " + value;
-    }
+    return value;
 
   }
 
