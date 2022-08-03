@@ -43,19 +43,6 @@ export class ExpensesComponent implements OnInit {
         }
       }
 
-      // expensesMap[month].sort((a, b) => b.value - a.value);
-      //
-      // const myMap = new Map();
-      // expensesMap[month].forEach((object, index) => {
-      //   myMap.set(object.category, index);
-      // });
-      //
-      // if (expensesMap[otherMonth]) {
-      //   expensesMap[otherMonth].sort((a, b) => {
-      //     return myMap.get(a.category) - myMap.get(b.category)
-      //   })
-      // }
-
       const datasets = values.map((expenses, index) => {
         return {
           data: expenses.map(expense => Math.round(expense.value)),

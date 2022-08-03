@@ -21,21 +21,22 @@ import {InputNumberModule} from "primeng/inputnumber";
 import {SelectButtonModule} from 'primeng/selectbutton';
 import {ToastModule} from 'primeng/toast';
 import {PortfolioComponent} from "./portfolio/portfolio.component";
-import { SoldPositionsComponent } from './sold-positions/sold-positions.component';
-import { TransactionsComponent } from './transactions/transactions.component';
+import {SoldPositionsComponent} from './sold-positions/sold-positions.component';
+import {TransactionsComponent} from './transactions/transactions.component';
 import {CheckboxModule} from "primeng/checkbox";
-import { DiagramDetailsComponent } from './diagram-details/diagram-details.component';
+import {DiagramDetailsComponent} from './diagram-details/diagram-details.component';
 import {DropdownModule} from 'primeng/dropdown';
-import { DiagramComponent } from './diagram/diagram.component';
+import {DiagramComponent} from './diagram/diagram.component';
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {InputSwitchModule} from "primeng/inputswitch";
-import { UpcomingDividendsComponent } from './upcoming-dividends/upcoming-dividends.component';
+import {UpcomingDividendsComponent} from './upcoming-dividends/upcoming-dividends.component';
 import {FullCalendarModule} from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import {CalendarModule} from 'primeng/calendar';
-import { ExpensesComponent } from './expenses/expenses.component';
+import {ExpensesComponent} from './expenses/expenses.component';
+import {InvestmentsComponent} from './investments/investments.component';
 
 registerLocaleData(localeAustria, 'de-AT');
 
@@ -48,7 +49,8 @@ const routes: Routes = [
   {path: 'transaction-wizard', component: TransactionWizardComponent},
   {path: 'sold-positions', component: SoldPositionsComponent},
   {path: 'upcoming-dividends', component: UpcomingDividendsComponent},
-  {path: 'expenses', component: ExpensesComponent}
+  {path: 'expenses', component: ExpensesComponent},
+  {path: 'investments', component: InvestmentsComponent}
 ];
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
@@ -70,7 +72,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     DiagramDetailsComponent,
     DiagramComponent,
     UpcomingDividendsComponent,
-    ExpensesComponent
+    ExpensesComponent,
+    InvestmentsComponent
   ],
   imports: [
     BrowserModule,
