@@ -1,0 +1,3 @@
+<p-calendar [(ngModel)]="date" (ngModelChange)="onDateSelected()" view="month" dateFormat="mm/yy"
+            [readonlyInput]="true"></p-calendar>
+<p-chart type="line" [data]="chartData" [options]="options" [responsive]="true"></p-chart>
