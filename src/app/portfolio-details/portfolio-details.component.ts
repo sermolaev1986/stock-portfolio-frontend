@@ -36,6 +36,10 @@ export class PortfolioDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.owner = params['owner'];
+      if (this.owner === "Overall") {
+        this.pageSize = 100;
+      }
+
       this.loadPositionsForPage();
     });
   }
