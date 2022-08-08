@@ -1,3 +1,13 @@
-<p-calendar [(ngModel)]="date" (ngModelChange)="onDateSelected()" view="month" dateFormat="mm/yy"
-            [readonlyInput]="true"></p-calendar>
+<div class="investments-header">
+  <div class="calendar-container">
+    <span class="p-inputgroup-addon icon"><i class="pi">From:</i></span>
+    <p-calendar [(ngModel)]="date" (ngModelChange)="onDateSelected()" view="month" dateFormat="mm/yy"
+                [readonlyInput]="true"></p-calendar>
+  </div>
+  <p-tag severity="success">Total invested: {{totalInvestments | currency: 'EUR'}}</p-tag>
+  <p-tag severity="warning">Total sold: {{totalSold| currency: 'EUR'}}</p-tag>
+
+  <p-tag>Total bought: {{totalBought| currency: 'EUR'}}</p-tag>
+  <p-tag severity="danger">Montly rate: {{monthlyRate| currency: 'EUR'}}</p-tag>
+</div>
 <p-chart type="line" [data]="chartData" [options]="options" [responsive]="true"></p-chart>

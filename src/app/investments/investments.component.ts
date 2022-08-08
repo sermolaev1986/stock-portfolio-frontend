@@ -78,6 +78,10 @@ export class InvestmentsComponent implements OnInit {
   };
   chartData: any;
   date: any;
+  totalInvestments = 0;
+  totalSold = 0;
+  totalBought = 0;
+  monthlyRate = 0;
 
   constructor(private readonly investmentsService: InvestmentsService) {
   }
@@ -87,19 +91,31 @@ export class InvestmentsComponent implements OnInit {
   }
 
   renderTransactions(transactions: Array<Transaction>) {
-    let totalInvestments = 0;
+    this.totalInvestments = 0;
+    this.totalBought = 0;
+    this.totalSold = 0;
     let investments = transactions.filter(value => value.operator !== 'MULTIPLY')
       .map(transaction => {
         if (transaction.operator === 'PLUS') {
-          totalInvestments += (transaction.argument * transaction.price)
+          this.totalBought +=  transaction.argument * transaction.price
+          this.totalInvestments += transaction.argument * transaction.price
         } else {
-          totalInvestments -= (transaction.argument * transaction.price)
+          this.totalSold += transaction.argument * transaction.price
+          this.totalInvestments -= transaction.argument * transaction.price
         }
         return {
           date: transaction.date,
-          value: totalInvestments
+          value: this.totalInvestments
         }
       })
+
+    let startDate = new Date(transactions[0].date)
+    let endDate = new Date(transactions[transactions.length - 1].date)
+
+    let amountOfMonths = endDate.getMonth() - startDate.getMonth() + 12 * (endDate.getFullYear() - startDate.getFullYear());
+    this.monthlyRate = this.totalInvestments / amountOfMonths;
+
+
     this.chartData = {
       labels: investments.map(item => new Date(item.date).toLocaleDateString()),
       datasets: [

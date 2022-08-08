@@ -37,6 +37,7 @@ import interactionPlugin from '@fullcalendar/interaction';
 import {CalendarModule} from 'primeng/calendar';
 import {ExpensesComponent} from './expenses/expenses.component';
 import {InvestmentsComponent} from './investments/investments.component';
+import {TagModule} from "primeng/tag";
 
 registerLocaleData(localeAustria, 'de-AT');
 
@@ -75,29 +76,30 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     ExpensesComponent,
     InvestmentsComponent
   ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    RouterModule.forRoot(routes),
-    ChartModule,
-    CardModule,
-    BadgeModule,
-    TableModule,
-    ReactiveFormsModule,
-    DropdownModule,
-    BrowserAnimationsModule,
-    CalendarModule,
-    AutoCompleteModule,
-    InputNumberModule,
-    SelectButtonModule,
-    ToastModule,
-    CheckboxModule,
-    FormsModule,
-    ProgressSpinnerModule,
-    InputSwitchModule,
-    FullCalendarModule,
-    CalendarModule
-  ],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        RouterModule.forRoot(routes),
+        ChartModule,
+        CardModule,
+        BadgeModule,
+        TableModule,
+        ReactiveFormsModule,
+        DropdownModule,
+        BrowserAnimationsModule,
+        CalendarModule,
+        AutoCompleteModule,
+        InputNumberModule,
+        SelectButtonModule,
+        ToastModule,
+        CheckboxModule,
+        FormsModule,
+        ProgressSpinnerModule,
+        InputSwitchModule,
+        FullCalendarModule,
+        CalendarModule,
+        TagModule
+    ],
   providers: [{
     provide: LOCALE_ID,
     useValue: 'de-AT'
