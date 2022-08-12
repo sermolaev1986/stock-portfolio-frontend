@@ -22,6 +22,7 @@ export class DiagramDetailsComponent implements OnInit {
   ];
 
   public displayGroupedByType = false;
+  public displayGroupedByEtf = false;
   public displayDataLabels = false;
 
   constructor(private readonly pieChartService: PieChartService) {
@@ -38,6 +39,51 @@ export class DiagramDetailsComponent implements OnInit {
 
     return {
       labels: Array.from(map.keys()),
+      datasets: [
+        {
+          data: Array.from(map.values()),
+          backgroundColor: [
+            "#42A5F5",
+            "#66BB6A",
+            "#FFA726",
+            "#62929E",
+            "#4A6D7C",
+            "#9AD1D4",
+            "#FCE762",
+            "#4F4789",
+            "#CBE896",
+            "#AD5D4E",
+            "#EB6534",
+            "#E85F5C",
+            "#FFDAC6",
+            "#7C6A0A"
+          ],
+          hoverBackgroundColor: [
+            "#64B5F6",
+            "#81C784",
+            "#FFB74D",
+            "#62929E",
+            "#4A6D7C",
+            "#9AD1D4",
+            "#FCE762",
+            "#4F4789",
+            "#CBE896",
+            "#AD5D4E",
+            "#EB6534",
+            "#E85F5C",
+            "#FFDAC6",
+            "#7C6A0A"
+          ]
+        }
+      ]
+    };
+  }
+
+  private getPieChartDataGroupedByEtf(data: Array<ChartData>) {
+    let map = this.groupBy(data, value => value.isEtf);
+
+    return {
+      labels: Array.from(map.keys()).map(value => value? 'ETF' : 'Stocks'),
       datasets: [
         {
           data: Array.from(map.values()),
@@ -95,6 +141,14 @@ export class DiagramDetailsComponent implements OnInit {
   public toggleDisplayGroupedByType() {
     if (this.displayGroupedByType) {
       this.setPieChartData(this.getPieChartDataGroupedByType(this.originalData));
+    } else {
+      this.setPieChartData(this.pieChartService.getPieChartData(this.originalData));
+    }
+  }
+
+  public toggleDisplayGroupedByEtf() {
+    if (this.displayGroupedByEtf) {
+      this.setPieChartData(this.getPieChartDataGroupedByEtf(this.originalData));
     } else {
       this.setPieChartData(this.pieChartService.getPieChartData(this.originalData));
     }

@@ -48,6 +48,7 @@ export class DashboardComponent implements OnInit {
         usSymbol: item.usSymbol,
         name: item.name,
         type: item.type,
+        etf: item.etf,
         stockCount: item.stockCount + position.stockCount,
         investments: item.investments + position.investments,
         dividends: item.dividends + position.dividends,

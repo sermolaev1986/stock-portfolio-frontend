@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import ChartDataLabels from "chartjs-plugin-datalabels";
 
 @Component({
@@ -6,7 +6,7 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
   templateUrl: './diagram.component.html',
   styleUrls: ['./diagram.component.css']
 })
-export class DiagramComponent implements OnInit {
+export class DiagramComponent implements OnInit, OnChanges {
 
   @Input()
   width: string = "300px";
@@ -27,6 +27,9 @@ export class DiagramComponent implements OnInit {
   public showLabelsInPercents = true;
 
   @Input()
+  public showLegend = false;
+
+  @Input()
   public showGrid = false;
 
   public plugins = [ChartDataLabels];
@@ -38,89 +41,91 @@ export class DiagramComponent implements OnInit {
   ngOnInit(): void {
     this.options = {
       responsive: true,
-        legend: {
-      display: false
-    },
       title: {
         display: false
       },
       indexAxis: 'y',
-        minBarLength: 50,
+      minBarLength: 50,
       // barValueSpacing: 1000000,
       scales: {
-      y: {
-        stacked: false,
+        y: {
+          stacked: false,
           grid: {
-          display: this.showGrid,
+            display: this.showGrid,
             color: "#e3e3e3",
             drawBorder: false,
             drawOnChartArea: true,
             drawTicks: this.showGrid
-        },
-        showTicks: false,
+          },
+          showTicks: false,
           showTickMarks: false,
           display: true,
           scaleLabel: {
-          show: false,
+            show: false,
             labelString: 'Value'
-        },
-        ticks: {
-          // callback: function(value, index, ticks) {
-          //   return index;
-          // },
-          mirror: false,
+          },
+          ticks: {
+            // callback: function(value, index, ticks) {
+            //   return index;
+            // },
+            mirror: false,
             display: this.showGrid,
             beginAtZero: true,
             max: 100,
             min: -100,
             suggestedMin: -100,
-        }
-      },
-      x: {
-        stacked: false,
+          }
+        },
+        x: {
+          stacked: false,
           grid: {
-          color: "#e3e3e3",
+            color: "#e3e3e3",
             display: this.showGrid,
             drawBorder: true,
             drawOnChartArea: true,
             drawTicks: this.showGrid
-        },
-        showTicks: true,
+          },
+          showTicks: true,
           showTickMarks: false,
           ticks: {
-          display: this.showGrid,
+            display: this.showGrid,
             beginAtZero: 0,
             suggestedMin: -100,
             min: -100,
             stepSize: 50
+          }
         }
-      }
-    },
+      },
       plugins: {
         datalabels: {
           enabled: true,
-            display: true,
-            color: '#fff'
+          display: true,
+          color: '#fff'
         },
         legend: {
           display: false
         },
         responsive: true,
-          maintainAspectRatio: false
+        maintainAspectRatio: false
       }
     };
+    this.renderLabels();
+  }
 
-    if (!this.displayDataLabels) {
-      // @ts-ignore
-      this.options.plugins.datalabels.formatter = this.formatNoOp;
-    } else {
-      if (this.showLabelsInPercents) {
-        /* show value in percents */
+  renderLabels(): void {
+    if (this.options) {
+      if (!this.displayDataLabels) {
         // @ts-ignore
-        this.options.plugins.datalabels.formatter = this.format;
+        this.options.plugins.datalabels.formatter = this.formatNoOp;
       } else {
-        // @ts-ignore
-        this.options.plugins.datalabels.formatter = this.formatWithLabel;
+        if (this.showLabelsInPercents) {
+          /* show value in percents */
+          // @ts-ignore
+          this.options.plugins.datalabels.formatter = this.format;
+        } else {
+          // @ts-ignore
+          this.options.plugins.datalabels.formatter = this.formatWithLabel;
+        }
       }
     }
   }
@@ -166,6 +171,10 @@ export class DiagramComponent implements OnInit {
       return name;
     }
 
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.renderLabels();
   }
 
 }

@@ -1,1 +1,21 @@
-<p-chart [width]="width" [height]="height" [type]="chartType" [data]="chartData" [options]="options" [plugins]="plugins" [responsive]="true"></p-chart>
+<div class="diagram-container">
+  <p-chart [width]="width" [height]="height" [type]="chartType" [data]="chartData" [options]="options"
+           [plugins]="plugins"
+           [responsive]="true"></p-chart>
+  <div class="table-container">
+    <p-table *ngIf="showLegend && chartData" [value]="chartData.labels">
+      <ng-template pTemplate="body" let-label let-i="rowIndex">
+        <tr>
+          <td class="row-container">
+            <div>
+                <span class="color-box"
+                      [ngStyle]="{'backgroundColor': chartData.datasets[0].backgroundColor[i]}"></span>
+              <span>{{label}}</span>
+            </div>
+            <div>{{chartData.datasets[0].data[i] | currency: 'EUR'}}</div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

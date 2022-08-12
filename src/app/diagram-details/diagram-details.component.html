@@ -1,5 +1,5 @@
-<div class="diagram-container">
-  <app-diagram [chartData]="chartData" [chartType]="chartType" [displayDataLabels]="displayDataLabels"></app-diagram>
+<div class="diagram-details-container">
+  <app-diagram width="500px" height="500px" [chartData]="chartData" [showLegend]="true" [chartType]="chartType" [displayDataLabels]="displayDataLabels"></app-diagram>
   <div class="asset-type-filter-container">
     <div class="field-checkbox">
       <p-checkbox value="reit" [(ngModel)]="selectedTypes" inputId="reit" (onChange)="refreshPieChart()"></p-checkbox>
@@ -23,6 +23,9 @@
     <p-inputSwitch [(ngModel)]="displayGroupedByType" inputId="displayGroupedByType"
                    (onChange)="toggleDisplayGroupedByType()"></p-inputSwitch>
     <label for="displayGroupedByType" class="groupByTypeLabel">Group by type</label>
+    <p-inputSwitch [(ngModel)]="displayGroupedByEtf" inputId="displayGroupedByEtf"
+                   (onChange)="toggleDisplayGroupedByEtf()"></p-inputSwitch>
+    <label for="displayGroupedByEtf" class="groupByTypeLabel">Group by ETF</label>
   </div>
 
   <p-dropdown [options]="chartTypes" [(ngModel)]="chartType" optionLabel="name" optionValue="code" (onChange)="refreshPieChart()"></p-dropdown>

@@ -8,6 +8,7 @@ export type Position = {
   usSymbol: string,
   name: string,
   type: string,
+  etf: boolean,
   stockCount: number,
   investments: number,
   buyDate: string,

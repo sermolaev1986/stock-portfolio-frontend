@@ -65,6 +65,7 @@ export class PortfolioComponent implements OnChanges {
         symbol: position.symbol,
         name: position.name,
         type: position.type,
+        isEtf: position.etf,
         price: PortfolioComponent.getValue(quotesMap, position.symbol) * position.stockCount
       });
     });
