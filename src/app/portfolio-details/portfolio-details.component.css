@@ -18,3 +18,7 @@
   display: flex;
   justify-content: space-between;
 }
+
+.checkbox-caption {
+  margin-left: 5px;
+}

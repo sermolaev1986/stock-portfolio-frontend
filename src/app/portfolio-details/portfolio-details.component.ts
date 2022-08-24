@@ -17,6 +17,7 @@ export class PortfolioDetailsComponent implements OnInit {
   public logoMap: Map<string, string> = new Map<string, string>();
   public owner: string = "";
   public positions: Array<PortfolioPosition> = [];
+  public allPositions: Array<PortfolioPosition> = [];
 
   public pageSize = 6;
   public totalPositions = 0;
@@ -25,6 +26,7 @@ export class PortfolioDetailsComponent implements OnInit {
   private sortDirection = 'ASC';
   public isSomePositionsSold = false;
   public loading = true;
+  public showSoldPositions = false;
 
   constructor(private readonly portfolioService: PortfolioService,
               private readonly stockQuoteService: StockQuoteService,
@@ -109,6 +111,9 @@ export class PortfolioDetailsComponent implements OnInit {
         }
       });
 
+      this.allPositions = this.positions;
+      this.onShowSoldPositionChange();
+
       this.loading = false;
 
     });
@@ -126,4 +131,12 @@ export class PortfolioDetailsComponent implements OnInit {
     return value ? value : "";
   }
 
+  public onShowSoldPositionChange() {
+    if (this.showSoldPositions) {
+      this.positions = this.allPositions;
+    } else {
+      this.positions = this.allPositions.filter(value => value.stockCount !== 0);
+    }
+
+  }
 }
