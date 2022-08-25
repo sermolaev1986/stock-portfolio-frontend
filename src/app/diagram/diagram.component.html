@@ -2,17 +2,22 @@
   <p-chart [width]="width" [height]="height" [type]="chartType" [data]="chartData" [options]="options"
            [plugins]="plugins"
            [responsive]="true"></p-chart>
+  <div *ngIf="showLegend" class="doughnut-center-message">
+    <div>{{selectedPositionName }}</div>
+    <div>{{selectedPositionValue | currency: 'EUR'}}</div>
+  </div>
   <div class="table-container">
-    <p-table *ngIf="showLegend && chartData" [value]="chartData.labels">
+    <p-table *ngIf="showLegend && chartData" [rowHover]="true" [value]="chartData.labels" selectionMode="single"
+             [(selection)]="selectedPosition" (onRowSelect)="onRowSelect()" (onRowUnselect)="onRowUnselect()">
       <ng-template pTemplate="body" let-label let-i="rowIndex">
-        <tr>
+        <tr class="p-selectable-row" [pSelectableRow]="i">
           <td class="row-container">
             <div>
                 <span class="color-box"
                       [ngStyle]="{'backgroundColor': chartData.datasets[0].backgroundColor[i]}"></span>
               <span>{{label}}</span>
             </div>
-            <div>{{chartData.datasets[0].data[i] | currency: 'EUR'}}</div>
+            <div *ngIf="sum !== 0">{{chartData.datasets[0].data[i] / sum | percent}}</div>
           </td>
         </tr>
       </ng-template>

@@ -1,4 +1,5 @@
-<p-table #dt [value]="positions" [paginator]="true" [lazy]="true" (onLazyLoad)="onPageChanged($event)" [rows]="pageSize"
+<p-table #dt [value]="positions" [paginator]="true" [lazy]="sortOnBackend" (onLazyLoad)="onPageChanged($event)"
+         [rows]="pageSize"
          [totalRecords]="totalPositions" styleClass="p-datatable-striped" [responsive]="true" [loading]="loading"
          sortField="name" [sortOrder]="1"
          responsiveLayout="scroll">
@@ -6,7 +7,8 @@
     <div class="table-header table-caption-container">
       Stocks of {{owner}} ({{positions.length}} positions)
       <div>
-        <p-checkbox [binary]="true" [(ngModel)]="showSoldPositions" (ngModelChange)="onShowSoldPositionChange()"></p-checkbox>
+        <p-checkbox [binary]="true" [(ngModel)]="showSoldPositions"
+                    (ngModelChange)="onShowSoldPositionChange()"></p-checkbox>
         <span class="checkbox-caption">Show sold positions</span>
       </div>
 
@@ -21,11 +23,21 @@
       <th pSortableColumn="name">Name
         <p-sortIcon field="name"></p-sortIcon>
       </th>
-      <th>Gewinn</th>
-      <th>Marktwert</th>
-      <th>Einstandswert</th>
-      <th>Stk</th>
-      <th>Dividende</th>
+      <th pSortableColumn="profit">Gewinn
+        <p-sortIcon *ngIf="!sortOnBackend" field="profit"></p-sortIcon>
+      </th>
+      <th pSortableColumn="currentValue">Marktwert
+        <p-sortIcon *ngIf="!sortOnBackend" field="currentValue"></p-sortIcon>
+      </th>
+      <th pSortableColumn="buyValue">Einstandswert
+        <p-sortIcon *ngIf="!sortOnBackend" field="buyValue"></p-sortIcon>
+      </th>
+      <th pSortableColumn="stockCount">Stk
+        <p-sortIcon *ngIf="!sortOnBackend" field="stockCount"></p-sortIcon>
+      </th>
+      <th pSortableColumn="dividendsTotalAmountPaid">Dividende
+        <p-sortIcon *ngIf="!sortOnBackend" field="dividendsTotalAmountPaid"></p-sortIcon>
+      </th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-position>

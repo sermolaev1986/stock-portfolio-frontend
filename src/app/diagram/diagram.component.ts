@@ -34,6 +34,10 @@ export class DiagramComponent implements OnInit, OnChanges {
 
   public plugins = [ChartDataLabels];
   public options: any;
+  public sum = 0;
+  public selectedPositionName = 'Depotwert';
+  public selectedPosition = null;
+  public selectedPositionValue;
 
   constructor() {
   }
@@ -174,7 +178,28 @@ export class DiagramComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.sum = 0;
+    if (this.chartData) {
+      const dataArr = this.chartData.datasets[0].data;
+
+      dataArr.map(data => {
+        this.sum += data;
+      });
+    }
+
+    this.selectedPositionName = 'Portfolio Wert';
+    this.selectedPositionValue = this.sum;
+
     this.renderLabels();
   }
 
+  onRowSelect() {
+    this.selectedPositionName = this.chartData.labels[this.selectedPosition];
+    this.selectedPositionValue = this.chartData.datasets[0].data[this.selectedPosition];
+  }
+
+  onRowUnselect() {
+    this.selectedPositionName = 'Portfolio Wert';
+    this.selectedPositionValue = this.sum;
+  }
 }

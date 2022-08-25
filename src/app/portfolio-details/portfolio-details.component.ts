@@ -27,6 +27,7 @@ export class PortfolioDetailsComponent implements OnInit {
   public isSomePositionsSold = false;
   public loading = true;
   public showSoldPositions = false;
+  public sortOnBackend = true;
 
   constructor(private readonly portfolioService: PortfolioService,
               private readonly stockQuoteService: StockQuoteService,
@@ -40,6 +41,7 @@ export class PortfolioDetailsComponent implements OnInit {
       this.owner = params['owner'];
       if (this.owner === "Overall") {
         this.pageSize = 100;
+        this.sortOnBackend = false;
       }
 
       this.loadPositionsForPage();
